@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "801072513955",
+    "project_id": "myfam-d7a10",
+    "storage_bucket": "myfam-d7a10.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:801072513955:android:6cfb214d0ed3e347f09016",
+        "android_client_info": {
+          "package_name": "com.example.famitree"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDdFCg-Ob6xKcdEeqqHUzu0V0I_xqmMhL8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
