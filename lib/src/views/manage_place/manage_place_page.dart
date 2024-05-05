@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class CMSPage extends StatelessWidget {
-  const CMSPage({super.key});
+class ManagePlace extends StatelessWidget {
+  const ManagePlace({super.key});
 
   @override
   Widget build(BuildContext context) {

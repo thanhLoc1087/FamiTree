@@ -64,7 +64,7 @@ class Member extends Equatable {
     return <String, dynamic>{
       'name': name,
       'relationship': relationship?.toMap(),
-      'homeland': homeland.toMap(),
+      'homeland': homeland.toJson(),
       'achievements': achievements.map((x) => x.toMap()).toList(),
       'death': death?.toMap(),
       'tree': tree.toMap(),
@@ -75,7 +75,7 @@ class Member extends Equatable {
     return Member(
       name: map['name'] as String,
       relationship: map['relationship'] != null ? Relationship.fromMap(map['relationship'] as Map<String,dynamic>) : null,
-      homeland: Place.fromMap(map['homeland'] as Map<String,dynamic>),
+      homeland: Place.fromJSon(json: map['homeland'] as Map<String,dynamic>),
       achievements: List<Achievement>.from((map['achievements'] as List<int>).map<Achievement>((x) => Achievement.fromMap(x as Map<String,dynamic>),),),
       death: map['death'] != null ? Death.fromMap(map['death'] as Map<String,dynamic>) : null,
       tree: FamilyTree.fromMap(map['tree'] as Map<String,dynamic>),

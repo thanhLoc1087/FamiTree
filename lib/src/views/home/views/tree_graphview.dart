@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:famitree/src/core/constants/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:graphview/GraphView.dart';
 
@@ -14,6 +15,7 @@ class _TreeViewPageState extends State<TreeViewPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColor.background,
         appBar: AppBar(),
         body: Column(
           mainAxisSize: MainAxisSize.max,

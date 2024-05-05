@@ -1,3 +1,4 @@
+import 'package:famitree/src/core/constants/colors.dart';
 import 'package:famitree/src/views/home/views/popup_menu_button.dart';
 import 'package:flutter/material.dart';
 
@@ -12,7 +13,8 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return const SafeArea(
       child: Scaffold(
-        floatingActionButton: const MyFloatingActionButton(),
+        backgroundColor: AppColor.background,
+        floatingActionButton: MyFloatingActionButton(),
         body: Center(
           child: TreeViewPage()
         ),

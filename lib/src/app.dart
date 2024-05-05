@@ -80,7 +80,7 @@ class MyApp extends StatelessWidget {
                 color: AppColor.text,
               ))),
             ),
-            darkTheme: ThemeData.dark(),
+            // darkTheme: ThemeData.dark(),
             themeMode: settingsController.themeMode,
             home: const SplashPage(),
       

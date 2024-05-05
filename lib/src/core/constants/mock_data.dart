@@ -7,16 +7,16 @@ import 'package:famitree/src/data/models/relationship_type.dart';
 
 class MockData {
   static List<Place> places = [
-    const Place(id: 'ag', name: 'An Giang', address: '806 Hickle Valley, Tulaborough, MI 15501-0750'),
-    const Place(id: 'hn', name: 'Hà Nội', address: 'Suite 486 7688 Rosetta Rest, Watsicamouth, SC 03844-2020'),
-    const Place(id: 'bg', name: 'Bắc Giang', address: '72767 Howell Tunnel, Lake Stanton, IA 23178'),
-    const Place(id: 'hcm', name: 'Hồ Chí Minh', address: '2407 Kirk Isle, Armandtown, OR 22563-1710'),
+    const Place(id: 'ag', name: 'An Giang', address: '806 Hickle Valley, Tulaborough, MI 15501-0750', quantity: 0),
+    const Place(id: 'hn', name: 'Hà Nội', address: 'Suite 486 7688 Rosetta Rest, Watsicamouth, SC 03844-2020', quantity: 0),
+    const Place(id: 'bg', name: 'Bắc Giang', address: '72767 Howell Tunnel, Lake Stanton, IA 23178', quantity: 0),
+    const Place(id: 'hcm', name: 'Hồ Chí Minh', address: '2407 Kirk Isle, Armandtown, OR 22563-1710', quantity: 0),
   ];
 
   static List<AchievementType> achievementTypes = [
-    const AchievementType(id: 'hg', name: 'Học Sinh giỏi', description: "Đạt thành tích hSG"),
-    const AchievementType(id: 'tn', name: 'Tốt nghiệp', description: "Tốt nghiệp THPT"),
-    const AchievementType(id: 'nobel', name: 'Giải Nobel', description: "Đạt giải Nobel"),
+    const AchievementType(id: 'hg', name: 'Học Sinh giỏi', description: "Đạt thành tích hSG", quantity: 0),
+    const AchievementType(id: 'tn', name: 'Tốt nghiệp', description: "Tốt nghiệp THPT", quantity: 0),
+    const AchievementType(id: 'nobel', name: 'Giải Nobel', description: "Đạt giải Nobel", quantity: 0),
   ];
 
   static List<Achievement> achievements = [
@@ -26,8 +26,8 @@ class MockData {
   ];
 
   static List<RelationshipType> relationshipTypes = [
-    const RelationshipType(id: 'chacon', name: "Cha - con", description: "Cha - con"),
-    const RelationshipType(id: 'vochong', name: "Vợ - Chồng", description: "Vợ - Chồng"),
+    const RelationshipType(id: 'chacon', name: "Cha - con", description: "Cha - con", quantity: 0),
+    const RelationshipType(id: 'vochong', name: "Vợ - Chồng", description: "Vợ - Chồng", quantity: 0),
   ];
 
   static List<FamilyTree> trees = [

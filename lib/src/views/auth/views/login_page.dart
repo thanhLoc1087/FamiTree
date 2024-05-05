@@ -1,3 +1,4 @@
+import 'package:famitree/src/core/constants/colors.dart';
 import 'package:famitree/src/core/constants/images_path.dart';
 import 'package:famitree/src/core/constants/routers.dart';
 import 'package:famitree/src/core/utils/check_connectivity.dart';
@@ -104,6 +105,7 @@ class _LoginPageState extends State<LoginPage> {
                         keyboardType: TextInputType.emailAddress,
                         cursorColor: Colors.black,
                         decoration: InputDecoration(
+                          focusColor: AppColor.text,
                           hintText: 'Enter your email',
                           hintStyle: GoogleFonts.abhayaLibre(),
                           prefixIcon: const Icon(Icons.email_outlined),
@@ -116,6 +118,7 @@ class _LoginPageState extends State<LoginPage> {
                         autocorrect: false,
                         cursorColor: Colors.black,
                         decoration: InputDecoration(
+                          focusColor: AppColor.text,
                           hintText: 'Enter your password',
                           hintStyle: GoogleFonts.abhayaLibre(),
                           prefixIcon: const Icon(Icons.lock_outline),
@@ -204,9 +207,7 @@ class _LoginPageState extends State<LoginPage> {
                                   final user =
                                       AuthService.firebase().currentUser;
                                   if (user != null) {
-                                    Provider.of<CurrentUser>(context,
-                                                listen: false)
-                                            .user =
+                                    Provider.of<CurrentUser>(context,listen: false).user =
                                         (await MyUser.getCurrentUser())!;
                                     final emailVerified = user.isEmailVerified;
                                     if (!mounted) return;
@@ -284,8 +285,8 @@ class _LoginPageState extends State<LoginPage> {
                           }
                         },
                         icon: const SizedBox(
-                          width: 36,
-                          height: 36,
+                          width: 28,
+                          height: 28,
                           child: Image(
                             image: AssetImage(AppImage.google),
                             fit: BoxFit.cover,

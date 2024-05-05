@@ -7,6 +7,7 @@ import 'src/views/settings/settings_controller.dart';
 import 'src/views/settings/settings_service.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );

@@ -1,3 +1,4 @@
+import 'package:famitree/src/core/global/global_data.dart';
 import 'package:famitree/src/data/models/user.dart';
 import 'package:flutter/material.dart';
 
@@ -8,6 +9,7 @@ class CurrentUser extends ChangeNotifier {
 
   set user(MyUser value) {
     _user = value;
+    GlobalData().listenAll();
     // notifyListeners();
   }
 

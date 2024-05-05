@@ -31,7 +31,7 @@ class Death extends Equatable {
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'cause': cause.toMap(),
-      'place': place.toMap(),
+      'place': place.toJson(),
       'time': time.millisecondsSinceEpoch,
     };
   }
@@ -39,7 +39,7 @@ class Death extends Equatable {
   factory Death.fromMap(Map<String, dynamic> map) {
     return Death(
       cause: CauseOfDeath.fromMap(map['cause'] as Map<String,dynamic>),
-      place: Place.fromMap(map['place'] as Map<String,dynamic>),
+      place: Place.fromJSon(json: map['place'] as Map<String,dynamic>),
       time: DateTime.fromMillisecondsSinceEpoch(map['time'] as int),
     );
   }

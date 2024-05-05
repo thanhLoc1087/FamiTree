@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:famitree/src/core/constants/colors.dart';
 import 'package:famitree/src/core/constants/images_path.dart';
 import 'package:famitree/src/core/constants/routers.dart';
 import 'package:famitree/src/core/utils/dialogs.dart';
@@ -61,7 +62,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
           appBar: AppBar(
             elevation: 0,
             backgroundColor: Colors.transparent,
-            foregroundColor: Colors.black,
+            foregroundColor: AppColor.text,
             // title: const Text("Login"),
           ),
           body: Container(
@@ -74,7 +75,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
                     "Verify \nyour account",
                     style: GoogleFonts.abhayaLibre(
                         textStyle: const TextStyle(
-                            color: Colors.black,
+                            color: AppColor.text,
                             fontSize: 36.00,
                             fontWeight: FontWeight.w900)),
                   ),
@@ -84,7 +85,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
                       const Text(
                           "We've sent you an email verification.\nIf you haven't receive your verification, please tap on the button below:",
                           style: TextStyle(
-                            color: Colors.black,
+                            color: AppColor.text,
                           )),
                       const SizedBox(
                         height: 60,
@@ -95,6 +96,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
                               borderRadius:
                                   BorderRadius.circular(25), // <-- Radius
                             ),
+                            backgroundColor: AppColor.interactive,
                             minimumSize: const Size.fromHeight(50),
                           ),
                           onPressed: () async {
@@ -105,7 +107,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
                             'Send email verification.',
                             style: GoogleFonts.abhayaLibre(
                                 textStyle: const TextStyle(
-                              color: Colors.black,
+                              color: AppColor.text,
                               fontSize: 20.00,
                             )),
                           )),
@@ -118,7 +120,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
                             borderRadius:
                                 BorderRadius.circular(25), // <-- Radius
                           ),
-                          backgroundColor: Colors.black,
+                          backgroundColor: AppColor.text,
                           minimumSize: const Size.fromHeight(50),
                         ),
                         onPressed: () => {
@@ -128,8 +130,8 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
                         child: Text(
                           'Later',
                           style: GoogleFonts.abhayaLibre(
-                              textStyle: TextStyle(
-                            color: Theme.of(context).colorScheme.primary,
+                              textStyle: const TextStyle(
+                            color: AppColor.interactive,
                             fontSize: 20.00,
                           )),
                         ),

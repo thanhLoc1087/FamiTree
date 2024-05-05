@@ -21,6 +21,27 @@ enum EMainMenu {
     title: 'Settings',
     iconData: Icons.settings_outlined
   ),
+
+  achievementTypes(
+    id: 'achievementTypes',
+    title: 'Achievement Types',
+    iconData: Icons.badge_outlined
+  ),
+  places(
+    id: 'places',
+    title: 'Places',
+    iconData: Icons.place_outlined
+  ),
+  jobs(
+    id: 'jobs',
+    title: 'Jobs',
+    iconData: Icons.work_outline
+  ),
+  deathCauses(
+    id: 'deathCauses',
+    title: 'Causes of Death',
+    iconData: Icons.dangerous_outlined
+  ),
   ;
 
   final String id;

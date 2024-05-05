@@ -1,15 +1,15 @@
-import 'package:famitree/src/core/constants/colors.dart';
-import 'package:famitree/src/core/constants/images_path.dart';
 import 'package:famitree/src/core/enums/main_menu.dart';
+import 'package:famitree/src/core/global/global_data.dart';
 import 'package:famitree/src/data/models/user.dart';
 import 'package:famitree/src/services/auth/auth_service.dart';
 import 'package:famitree/src/services/notifiers/current_user.dart';
 import 'package:famitree/src/views/auth/views/pre_login_page.dart';
 import 'package:famitree/src/views/auth/views/verify_page.dart';
+import 'package:famitree/src/views/cms/cms_page.dart';
+import 'package:famitree/src/views/main/views/menu_drawer.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slider_drawer/flutter_slider_drawer.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 
 import '../home/home_page.dart';
@@ -19,17 +19,17 @@ class MainPage extends StatelessWidget {
   const MainPage({super.key});
   @override
   Widget build(BuildContext context) {
-    DateTime? currentBackPressTime;
-    bool onWillPop() {
-      DateTime now = DateTime.now();
-      if (currentBackPressTime == null ||
-          now.difference(currentBackPressTime!) > const Duration(seconds: 2)) {
-        currentBackPressTime = now;
-        Fluttertoast.showToast(msg: "Press again to exit app.");
-        return false;
-      }
-      return true;
-    }
+    // DateTime? currentBackPressTime;
+    // bool onWillPop() {
+    //   DateTime now = DateTime.now();
+    //   if (currentBackPressTime == null ||
+    //       now.difference(currentBackPressTime!) > const Duration(seconds: 2)) {
+    //     currentBackPressTime = now;
+    //     Fluttertoast.showToast(msg: "Press again to exit app.");
+    //     return false;
+    //   }
+    //   return true;
+    // }
     return PopScope(
       canPop: true,
       child: FutureBuilder(
@@ -43,8 +43,13 @@ class MainPage extends StatelessWidget {
                     future: MyUser.getCurrentUser(),
                     builder: (context, userSnapshot) {
                       if (userSnapshot.connectionState == ConnectionState.done) {
+                        if (userSnapshot.data == null) {
+                          AuthService.google().logout();
+                          return const PreLoginPage();
+                        }
                         Provider.of<CurrentUser>(context, listen: false).user =
                             userSnapshot.data!;
+                        debugPrint("HELLOO ${GlobalData().places}");
                         return const MainPageContent();
                       } else {
                         return const Scaffold(
@@ -63,6 +68,10 @@ class MainPage extends StatelessWidget {
                       builder: (context, userSnapshot) {
                         if (userSnapshot.connectionState ==
                             ConnectionState.done) {
+                          if (userSnapshot.data == null) {
+                            AuthService.firebase().logout();
+                            return const PreLoginPage();
+                          }
                           Provider.of<CurrentUser>(context, listen: false).user =
                               userSnapshot.data!;
                           return const HomePage();
@@ -119,7 +128,7 @@ class MainPageContentState extends State<MainPageContent> {
         ),
         sliderOpenSize: 179,
         animationDuration: 200,
-        slider: _SliderView(
+        slider: MenuDrawer(
           onItemClick: (index) {
             if (!kIsWeb) {
               _sliderDrawerKey.currentState!.closeSlider();
@@ -132,8 +141,14 @@ class MainPageContentState extends State<MainPageContent> {
         child: Builder(
           builder: (context) {
             final selectedMenuItem = EMainMenu.values[selectedIndex];
+            // (MyUser.currentUser?.isAdmin ?? false) ?
+            //   MainMenuItems.adminMenus[selectedIndex] :
+            //   MainMenuItems.userMenus[selectedIndex];
             switch(selectedMenuItem) {
               case EMainMenu.home:
+                if (MyUser.currentUser?.isAdmin ?? false) {
+                  return const CMSPage();
+                }
                 return const HomePage();
               case EMainMenu.chart:
                 // TODO: Handle this case.
@@ -141,82 +156,19 @@ class MainPageContentState extends State<MainPageContent> {
                 // TODO: Handle this case.
               case EMainMenu.settings:
                 // TODO: Handle this case.
+              case EMainMenu.achievementTypes:
+                // TODO: Handle this case.
+              case EMainMenu.places:
+                // TODO: Handle this case.
+              case EMainMenu.jobs:
+                // TODO: Handle this case.
+              case EMainMenu.deathCauses:
+                // TODO: Handle this case.
               default: return Center(child: Text(selectedMenuItem.title),);
             }
           }
         )
       )
     );
-  }
-}
-
-class _SliderView extends StatelessWidget {
-  final Function(int)? onItemClick;
-
-  const _SliderView({super.key, this.onItemClick});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: AppColor.background,
-      padding: const EdgeInsets.only(top: 30),
-      child: ListView(
-        children: <Widget>[
-          const SizedBox(
-            height: 30,
-          ),
-          CircleAvatar(
-            radius: 65,
-            backgroundColor: AppColor.interactive,
-            child: const CircleAvatar(
-              radius: 60,
-              backgroundImage: AssetImage(AppImage.defaultProfile),
-            ),
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          Text(
-            'Nick',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              color: AppColor.text,
-              fontWeight: FontWeight.bold,
-              fontSize: 30,
-            ),
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          ...EMainMenu.values
-              .map((menu) => _SliderMenuItem(
-                  item: menu,
-                  iconData: menu.iconData,
-                  onTap: onItemClick)),
-        ],
-      ),
-    );
-  }
-}
-
-class _SliderMenuItem extends StatelessWidget {
-  final EMainMenu item;
-  final IconData iconData;
-  final Function(int)? onTap;
-
-  const _SliderMenuItem(
-      {super.key,
-      required this.item,
-      required this.iconData,
-      required this.onTap});
-
-  @override
-  Widget build(BuildContext context) {
-    return ListTile(
-        title: Text(item.title,
-            style: TextStyle(
-                color: AppColor.text, fontFamily: 'Averta_Regular')),
-        leading: Icon(iconData, color: AppColor.text),
-        onTap: () => onTap?.call(EMainMenu.values.indexOf(item)));
   }
 }
