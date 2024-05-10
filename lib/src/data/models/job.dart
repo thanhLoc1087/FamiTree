@@ -1,4 +1,6 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:equatable/equatable.dart';
+import 'package:famitree/src/core/utils/converter.dart';
 
 class Job extends Equatable {
   final String id;
@@ -35,4 +37,26 @@ class Job extends Equatable {
 
   @override
   bool get stringify => true;
+
+  Map<String, dynamic> toJson() {
+    return <String, dynamic>{
+      'name': name,
+      'description': description,
+      'quantity': quantity,
+      'deleted': deleted,
+    };
+  }
+
+  factory Job.fromJson({
+    String? id,
+    required Map<String, dynamic> json
+  }) {
+    return Job(
+      id: id ?? cvToString(json['id']),
+      name: cvToString(json['name']),
+      description: cvToString(json['description']),
+      quantity: cvToInt(json['quantity']),
+      deleted: cvToBool(json['deleted']),
+    );
+  }
 }

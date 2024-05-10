@@ -156,7 +156,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         final nameText = _nameController.text.trim();
                         final confirmPasswordText = _confirmPasswordController.text.trim();
                         if (passwordText != confirmPasswordText) {
-                          await showMessageDialog(context, 'Passwords do not match.');
+                          await DialogUtils.showMessageDialog(context, 'Passwords do not match.');
                           return;
                         }
                         try {
@@ -172,15 +172,15 @@ class _RegisterPageState extends State<RegisterPage> {
                           if (!mounted) return;
                           Navigator.of(context).pushNamed(AppRouter.verify);
                         } on WeakPasswordAuthException {
-                          await showMessageDialog(context, 'Your password is not strong enough.');
+                          await DialogUtils.showMessageDialog(context, 'Your password is not strong enough.');
                         } on EmailAlreadyInUseAuthException {
-                          await showMessageDialog(context, 'Email already in use.');
+                          await DialogUtils.showMessageDialog(context, 'Email already in use.');
                         } on InvalidEmailAuthException {
-                          await showMessageDialog(context, 'Invalid email.');
+                          await DialogUtils.showMessageDialog(context, 'Invalid email.');
                         } on GenericAuthException {
-                          await showMessageDialog(context, 'Authentication error.');
+                          await DialogUtils.showMessageDialog(context, 'Authentication error.');
                         } catch (e) {
-                            await showMessageDialog(context, 'Error: ${e.toString()}', title: 'Something went wrong');
+                            await DialogUtils.showMessageDialog(context, 'Error: ${e.toString()}', title: 'Something went wrong');
                         }
                       } 
                     ),

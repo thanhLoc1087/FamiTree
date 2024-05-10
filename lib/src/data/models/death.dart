@@ -1,7 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'dart:convert';
-
 import 'package:equatable/equatable.dart';
+import 'package:famitree/src/core/utils/converter.dart';
 
 import 'package:famitree/src/data/models/cause_of_death.dart';
 import 'package:famitree/src/data/models/place.dart';
@@ -28,25 +27,21 @@ class Death extends Equatable {
     );
   }
 
-  Map<String, dynamic> toMap() {
+  Map<String, dynamic> toJson() {
     return <String, dynamic>{
-      'cause': cause.toMap(),
+      'cause': cause.toJsonWithId(),
       'place': place.toJson(),
       'time': time.millisecondsSinceEpoch,
     };
   }
 
-  factory Death.fromMap(Map<String, dynamic> map) {
+  factory Death.fromJson(Map<String, dynamic> map) {
     return Death(
-      cause: CauseOfDeath.fromMap(map['cause'] as Map<String,dynamic>),
-      place: Place.fromJSon(json: map['place'] as Map<String,dynamic>),
-      time: DateTime.fromMillisecondsSinceEpoch(map['time'] as int),
+      cause: CauseOfDeath.fromJson(json: map['cause'] as Map<String,dynamic>),
+      place: Place.fromJson(json: map['place'] as Map<String,dynamic>),
+      time: cvToDate(map['time']),
     );
   }
-
-  String toJson() => json.encode(toMap());
-
-  factory Death.fromJson(String source) => Death.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
   bool get stringify => true;

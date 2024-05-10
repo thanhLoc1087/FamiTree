@@ -60,7 +60,6 @@ class _PreLoginPageState extends State<PreLoginPage> {
                     width: (MediaQuery.of(context).size.width - 60),
                     height: 55,
                     child: ElevatedButton(
-                      // style: ElevatedButton.styleFrom(shape: const StadiumBorder()),
                       style: ElevatedButton.styleFrom(
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(25), // <-- Radius
@@ -72,8 +71,7 @@ class _PreLoginPageState extends State<PreLoginPage> {
                         style: GoogleFonts.abhayaLibre(
                             textStyle: const TextStyle(
                                 color: AppColor.interactive,
-                                fontSize: 20.00,
-                                fontWeight: FontWeight.w900)),
+                                fontSize: 20.00,)),
                       ),
                       onPressed: () {
                         Navigator.of(context).pushNamed(AppRouter.login);
@@ -104,8 +102,7 @@ class _PreLoginPageState extends State<PreLoginPage> {
                         style: GoogleFonts.abhayaLibre(
                             textStyle: const TextStyle(
                                 color: AppColor.text,
-                                fontSize: 20.00,
-                                fontWeight: FontWeight.w900)),
+                                fontSize: 20.00,)),
                       ),
                       onPressed: () {
                         Navigator.of(context).pushNamed(AppRouter.register);

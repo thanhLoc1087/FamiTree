@@ -27,6 +27,11 @@ enum EMainMenu {
     title: 'Achievement Types',
     iconData: Icons.badge_outlined
   ),
+  relationshipTypes(
+    id: 'relationshipTypes',
+    title: 'Relationship Types',
+    iconData: Icons.badge_outlined
+  ),
   places(
     id: 'places',
     title: 'Places',

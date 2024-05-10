@@ -1,6 +1,4 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'dart:convert';
-
 import 'package:equatable/equatable.dart';
 
 import 'package:famitree/src/data/models/family_tree.dart';
@@ -60,29 +58,25 @@ class Member extends Equatable {
     ];
   }
 
-  Map<String, dynamic> toMap() {
+  Map<String, dynamic> toJson() {
     return <String, dynamic>{
       'name': name,
-      'relationship': relationship?.toMap(),
+      'relationship': relationship?.toJson(),
       'homeland': homeland.toJson(),
-      'achievements': achievements.map((x) => x.toMap()).toList(),
-      'death': death?.toMap(),
+      'achievements': achievements.map((x) => x.toJson()).toList(),
+      'death': death?.toJson(),
       'tree': tree.toMap(),
     };
   }
 
-  factory Member.fromMap(Map<String, dynamic> map) {
+  factory Member.fromJson(Map<String, dynamic> json) {
     return Member(
-      name: map['name'] as String,
-      relationship: map['relationship'] != null ? Relationship.fromMap(map['relationship'] as Map<String,dynamic>) : null,
-      homeland: Place.fromJSon(json: map['homeland'] as Map<String,dynamic>),
-      achievements: List<Achievement>.from((map['achievements'] as List<int>).map<Achievement>((x) => Achievement.fromMap(x as Map<String,dynamic>),),),
-      death: map['death'] != null ? Death.fromMap(map['death'] as Map<String,dynamic>) : null,
-      tree: FamilyTree.fromMap(map['tree'] as Map<String,dynamic>),
+      name: json['name'] as String,
+      relationship: json['relationship'] != null ? Relationship.fromJson(json['relationship'] as Map<String,dynamic>) : null,
+      homeland: Place.fromJson(json: json['homeland'] as Map<String,dynamic>),
+      achievements: List<Achievement>.from((json['achievements'] as List<int>).map<Achievement>((x) => Achievement.fromJson(x as Map<String,dynamic>),),),
+      death: json['death'] != null ? Death.fromJson(json['death'] as Map<String,dynamic>) : null,
+      tree: FamilyTree.fromMap(json['tree'] as Map<String,dynamic>),
     );
   }
-
-  String toJson() => json.encode(toMap());
-
-  factory Member.fromJson(String source) => Member.fromMap(json.decode(source) as Map<String, dynamic>);
 }

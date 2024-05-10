@@ -36,7 +36,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
     if (email.isNotEmpty) {
       try {
         await AuthService.firebase().sendPasswordResetEmail(email: email);
-        await showMessageDialog(context, 'Please check your email to reset your password.');
+        await DialogUtils.showMessageDialog(context, 'Please check your email to reset your password.');
         Navigator.of(context).pop();
       } on UserNotFoundAuthException {
         var snackBar = const SnackBar(content: Text('User not found.\nMake sure your email has been registered.'));

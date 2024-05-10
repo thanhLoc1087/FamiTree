@@ -222,19 +222,19 @@ class _LoginPageState extends State<LoginPage> {
                                     }
                                   }
                                 } on UserNotFoundAuthException {
-                                  await showMessageDialog(context,
+                                  await DialogUtils.showMessageDialog(context,
                                       'This email has not been registered.');
                                 } on InvalidEmailAuthException {
-                                  await showMessageDialog(
+                                  await DialogUtils.showMessageDialog(
                                       context, 'Invalid email.');
                                 } on WrongPasswordAuthException {
-                                  await showMessageDialog(
+                                  await DialogUtils.showMessageDialog(
                                       context, 'Wrong password.');
                                 } on GenericAuthException {
-                                  await showMessageDialog(
+                                  await DialogUtils.showMessageDialog(
                                       context, 'Authentication Error.');
                                 } catch (e) {
-                                  await showMessageDialog(
+                                  await DialogUtils.showMessageDialog(
                                       context, 'Error: ${e.toString()}');
                                 }
                               })),
@@ -275,12 +275,12 @@ class _LoginPageState extends State<LoginPage> {
                                   AppRouter.main, (route) => false);
                             }
                           } on UserNotLoggedInAuthException {
-                            await showMessageDialog(
+                            await DialogUtils.showMessageDialog(
                                 context, 'Login cancelled!');
                           } on UserNotFoundAuthException {
-                            await showMessageDialog(context, 'Login failed!');
+                            await DialogUtils.showMessageDialog(context, 'Login failed!');
                           } catch (e) {
-                            await showMessageDialog(
+                            await DialogUtils.showMessageDialog(
                                 context, 'Error: ${e.toString()}');
                           }
                         },

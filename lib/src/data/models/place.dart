@@ -40,7 +40,6 @@ class Place extends Equatable {
 
   Map<String, dynamic> toJson() {
     return <String, dynamic>{
-      'id': id,
       'name': name,
       'address': address,
       'quantity': quantity,
@@ -48,7 +47,7 @@ class Place extends Equatable {
     };
   }
 
-  factory Place.fromJSon({
+  factory Place.fromJson({
     String? id, 
     required Map<String, dynamic> json
   }) {

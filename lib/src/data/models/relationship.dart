@@ -1,6 +1,4 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'dart:convert';
-
 import 'package:equatable/equatable.dart';
 import 'package:famitree/src/data/models/member.dart';
 
@@ -29,25 +27,21 @@ class Relationship extends Equatable {
     );
   }
 
-  Map<String, dynamic> toMap() {
+  Map<String, dynamic> toJson() {
     return <String, dynamic>{
-      'type': type.toMap(),
-      'member': member.toMap(),
+      'type': type.toJsonWithId(),
+      'member': member.toJson(),
       'time': time.millisecondsSinceEpoch,
     };
   }
 
-  factory Relationship.fromMap(Map<String, dynamic> map) {
+  factory Relationship.fromJson(Map<String, dynamic> json) {
     return Relationship(
-      type: RelationshipType.fromMap(map['type'] as Map<String,dynamic>),
-      member: Member.fromMap(map['member'] as Map<String,dynamic>),
-      time: DateTime.fromMillisecondsSinceEpoch(map['time'] as int),
+      type: RelationshipType.fromJson(json: json['type'] as Map<String,dynamic>),
+      member: Member.fromJson(json['member'] as Map<String,dynamic>),
+      time: DateTime.fromMillisecondsSinceEpoch(json['time'] as int),
     );
   }
-
-  String toJson() => json.encode(toMap());
-
-  factory Relationship.fromJson(String source) => Relationship.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
   bool get stringify => true;

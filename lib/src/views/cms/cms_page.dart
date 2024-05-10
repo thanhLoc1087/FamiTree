@@ -5,6 +5,6 @@ class CMSPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(child: Text('CMS'),);
+    return const Center(child: Text('ADMIN PAGE'),);
   }
 }

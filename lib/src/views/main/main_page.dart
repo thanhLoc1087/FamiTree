@@ -1,5 +1,4 @@
 import 'package:famitree/src/core/enums/main_menu.dart';
-import 'package:famitree/src/core/global/global_data.dart';
 import 'package:famitree/src/data/models/user.dart';
 import 'package:famitree/src/services/auth/auth_service.dart';
 import 'package:famitree/src/services/notifiers/current_user.dart';
@@ -7,6 +6,11 @@ import 'package:famitree/src/views/auth/views/pre_login_page.dart';
 import 'package:famitree/src/views/auth/views/verify_page.dart';
 import 'package:famitree/src/views/cms/cms_page.dart';
 import 'package:famitree/src/views/main/views/menu_drawer.dart';
+import 'package:famitree/src/views/manage_achievement_type/manage_achievement_type_page.dart';
+import 'package:famitree/src/views/manage_death_cause/manage_death_cause_page.dart';
+import 'package:famitree/src/views/manage_job/manage_job_page.dart';
+import 'package:famitree/src/views/manage_place/manage_place_page.dart';
+import 'package:famitree/src/views/manage_relationship_type/manage_relationship_type_page.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_slider_drawer/flutter_slider_drawer.dart';
@@ -49,7 +53,6 @@ class MainPage extends StatelessWidget {
                         }
                         Provider.of<CurrentUser>(context, listen: false).user =
                             userSnapshot.data!;
-                        debugPrint("HELLOO ${GlobalData().places}");
                         return const MainPageContent();
                       } else {
                         return const Scaffold(
@@ -141,9 +144,7 @@ class MainPageContentState extends State<MainPageContent> {
         child: Builder(
           builder: (context) {
             final selectedMenuItem = EMainMenu.values[selectedIndex];
-            // (MyUser.currentUser?.isAdmin ?? false) ?
-            //   MainMenuItems.adminMenus[selectedIndex] :
-            //   MainMenuItems.userMenus[selectedIndex];
+            debugPrint("$selectedMenuItem");
             switch(selectedMenuItem) {
               case EMainMenu.home:
                 if (MyUser.currentUser?.isAdmin ?? false) {
@@ -151,19 +152,22 @@ class MainPageContentState extends State<MainPageContent> {
                 }
                 return const HomePage();
               case EMainMenu.chart:
-                // TODO: Handle this case.
+                
               case EMainMenu.profile:
-                // TODO: Handle this case.
+                
               case EMainMenu.settings:
-                // TODO: Handle this case.
+                
               case EMainMenu.achievementTypes:
-                // TODO: Handle this case.
+                return const ManageAchievementTypePage();
+              case EMainMenu.relationshipTypes:
+                return const ManageRelationshipTypePage();
               case EMainMenu.places:
-                // TODO: Handle this case.
+                return const ManagePlacePage();
               case EMainMenu.jobs:
-                // TODO: Handle this case.
+                return const ManageJobPage();
               case EMainMenu.deathCauses:
-                // TODO: Handle this case.
+                return const ManageDeathCausePage();
+                
               default: return Center(child: Text(selectedMenuItem.title),);
             }
           }

@@ -9,9 +9,10 @@ class MainMenuItems {
   ];
 
   static List<EMainMenu> adminMenus = [
-    EMainMenu.achievementTypes,
+    EMainMenu.relationshipTypes,
     EMainMenu.places,
     EMainMenu.jobs,
+    EMainMenu.achievementTypes,
     EMainMenu.deathCauses,
   ];
 }

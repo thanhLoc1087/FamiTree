@@ -1,6 +1,4 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'dart:convert';
-
 import 'package:equatable/equatable.dart';
 import 'package:famitree/src/core/utils/converter.dart';
 
@@ -40,7 +38,16 @@ class CauseOfDeath extends Equatable {
   @override
   bool get stringify => true;
 
-  Map<String, dynamic> toMap() {
+  Map<String, dynamic> toJson() {
+    return <String, dynamic>{
+      'name': name,
+      'description': description,
+      'deleted': deleted,
+      'quantity': quantity,
+    };
+  }
+
+  Map<String, dynamic> toJsonWithId() {
     return <String, dynamic>{
       'id': id,
       'name': name,
@@ -50,17 +57,13 @@ class CauseOfDeath extends Equatable {
     };
   }
 
-  factory CauseOfDeath.fromMap(Map<String, dynamic> map) {
+  factory CauseOfDeath.fromJson({String? id, required Map<String, dynamic> json}) {
     return CauseOfDeath(
-      id: cvToString(map['id']),
-      name: cvToString(map['name']),
-      description: cvToString(map['description']), 
-      deleted: cvToBool(map['deleted']),
-      quantity: cvToInt(map['quantity']),
+      id: id ?? cvToString(json['id']),
+      name: cvToString(json['name']),
+      description: cvToString(json['description']), 
+      deleted: cvToBool(json['deleted']),
+      quantity: cvToInt(json['quantity']),
     );
   }
-
-  String toJson() => json.encode(toMap());
-
-  factory CauseOfDeath.fromJson(String source) => CauseOfDeath.fromMap(json.decode(source) as Map<String, dynamic>);
 }

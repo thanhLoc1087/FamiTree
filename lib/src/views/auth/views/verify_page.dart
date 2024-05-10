@@ -32,7 +32,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
       if (user?.isEmailVerified ?? false) {
         timer.cancel();
         if (!mounted) return;
-        await showMessageDialog(
+        await DialogUtils.showMessageDialog(
             context, 'Your email has been successfully verified.');
         Navigator.of(context)
             .pushNamedAndRemoveUntil(AppRouter.main, (route) => false);
