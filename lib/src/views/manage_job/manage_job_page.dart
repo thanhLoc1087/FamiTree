@@ -26,7 +26,6 @@ class ManageJobPage extends StatelessWidget {
           elevation: 0,
           centerTitle: true,
           title: const Text("Jobs"),
-          automaticallyImplyLeading: false
         ),
         body: Container(
           constraints: BoxConstraints(

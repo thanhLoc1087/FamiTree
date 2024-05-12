@@ -1,3 +1,4 @@
+import 'package:famitree/src/core/constants/colors.dart';
 import 'package:flutter/material.dart';
 
 enum EMainMenu {
@@ -47,15 +48,33 @@ enum EMainMenu {
     title: 'Causes of Death',
     iconData: Icons.dangerous_outlined
   ),
+  updateProfile(
+    id: 'updateProfile',
+    title: 'Update Profile',
+    iconData: Icons.person_2_outlined
+  ),
+  forgotPassword(
+    id: 'forgotPassword',
+    title: 'Forgot Password',
+    iconData: Icons.password
+  ),
+  logout(
+    id: 'logout',
+    title: 'Log out',
+    iconData: Icons.logout,
+    color: AppColor.danger
+  ),
   ;
 
   final String id;
   final IconData iconData;
   final String title;
+  final Color color;
 
   const EMainMenu({
     required this.id,
     required this.title,
     required this.iconData,
+    this.color = AppColor.text,
   });
 }

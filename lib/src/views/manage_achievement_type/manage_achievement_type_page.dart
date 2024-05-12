@@ -26,7 +26,6 @@ class ManageAchievementTypePage extends StatelessWidget {
           elevation: 0,
           centerTitle: true,
           title: const Text("Achievement Types"),
-          automaticallyImplyLeading: false
         ),
         body: Container(
           constraints: BoxConstraints(

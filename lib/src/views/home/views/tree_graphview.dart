@@ -16,7 +16,6 @@ class _TreeViewPageState extends State<TreeViewPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColor.background,
-        appBar: AppBar(),
         body: Column(
           mainAxisSize: MainAxisSize.max,
           children: [

@@ -1,22 +1,16 @@
-import 'package:famitree/src/core/enums/main_menu.dart';
+import 'package:famitree/src/core/constants/colors.dart';
+import 'package:famitree/src/core/constants/global_var.dart';
 import 'package:famitree/src/data/models/user.dart';
 import 'package:famitree/src/services/auth/auth_service.dart';
 import 'package:famitree/src/services/notifiers/current_user.dart';
 import 'package:famitree/src/views/auth/views/pre_login_page.dart';
 import 'package:famitree/src/views/auth/views/verify_page.dart';
 import 'package:famitree/src/views/cms/cms_page.dart';
-import 'package:famitree/src/views/main/views/menu_drawer.dart';
-import 'package:famitree/src/views/manage_achievement_type/manage_achievement_type_page.dart';
-import 'package:famitree/src/views/manage_death_cause/manage_death_cause_page.dart';
-import 'package:famitree/src/views/manage_job/manage_job_page.dart';
-import 'package:famitree/src/views/manage_place/manage_place_page.dart';
-import 'package:famitree/src/views/manage_relationship_type/manage_relationship_type_page.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_slider_drawer/flutter_slider_drawer.dart';
 import 'package:provider/provider.dart';
 
 import '../home/home_page.dart';
+import 'views/drawer.dart';
 
 
 class MainPage extends StatelessWidget {
@@ -110,69 +104,38 @@ class MainPageContent extends StatefulWidget {
 }
 
 class MainPageContentState extends State<MainPageContent> {
-  final GlobalKey<SliderDrawerState> _sliderDrawerKey =
-      GlobalKey<SliderDrawerState>();
-  late int selectedIndex;
-
   @override
   void initState() {
-    selectedIndex = 0;
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SliderDrawer(
-        key: _sliderDrawerKey,
-        appBar: SliderAppBar(
-          appBarColor: Colors.white,
-          title: Container()
-        ),
-        sliderOpenSize: 179,
-        animationDuration: 200,
-        slider: MenuDrawer(
-          onItemClick: (index) {
-            if (!kIsWeb) {
-              _sliderDrawerKey.currentState!.closeSlider();
-            }
-            setState(() {
-              selectedIndex = index;
-            });
+      appBar: AppBar(
+        leading: IconButton(
+          onPressed: () {
+            GlobalVar.scaffoldState.currentState
+                ?.openDrawer();
           },
+          icon: const Icon(
+            Icons.menu,
+            color: AppColor.text,
+          ),
         ),
-        child: Builder(
-          builder: (context) {
-            final selectedMenuItem = EMainMenu.values[selectedIndex];
-            debugPrint("$selectedMenuItem");
-            switch(selectedMenuItem) {
-              case EMainMenu.home:
-                if (MyUser.currentUser?.isAdmin ?? false) {
-                  return const CMSPage();
-                }
-                return const HomePage();
-              case EMainMenu.chart:
-                
-              case EMainMenu.profile:
-                
-              case EMainMenu.settings:
-                
-              case EMainMenu.achievementTypes:
-                return const ManageAchievementTypePage();
-              case EMainMenu.relationshipTypes:
-                return const ManageRelationshipTypePage();
-              case EMainMenu.places:
-                return const ManagePlacePage();
-              case EMainMenu.jobs:
-                return const ManageJobPage();
-              case EMainMenu.deathCauses:
-                return const ManageDeathCausePage();
-                
-              default: return Center(child: Text(selectedMenuItem.title),);
-            }
+      ),
+      key: GlobalVar.scaffoldState,
+      backgroundColor: AppColor.background,
+      extendBodyBehindAppBar: true,
+      drawer: const ShopMenuDrawer(),
+      body: Builder(
+        builder: (context) {
+          if (MyUser.currentUser?.isAdmin ?? false) {
+            return const CMSPage();
           }
-        )
-      )
+          return const HomePage();
+        }, 
+      ) 
     );
   }
 }

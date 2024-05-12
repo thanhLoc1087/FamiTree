@@ -26,7 +26,6 @@ class ManageRelationshipTypePage extends StatelessWidget {
           elevation: 0,
           centerTitle: true,
           title: const Text("Relationship Types"),
-          automaticallyImplyLeading: false
         ),
         body: Container(
           constraints: BoxConstraints(

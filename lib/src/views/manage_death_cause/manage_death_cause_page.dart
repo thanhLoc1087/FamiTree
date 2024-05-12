@@ -26,7 +26,6 @@ class ManageDeathCausePage extends StatelessWidget {
           elevation: 0,
           centerTitle: true,
           title: const Text("Death Causes"),
-          automaticallyImplyLeading: false
         ),
         body: Container(
           constraints: BoxConstraints(

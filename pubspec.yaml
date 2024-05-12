@@ -17,6 +17,7 @@ dependencies:
   equatable: ^2.0.5
   firebase_auth: ^4.19.1
   firebase_core: ^2.29.0
+  firebase_storage: ^11.7.5
   flashy_tab_bar2: ^0.0.10
   flutter:
     sdk: flutter
@@ -28,6 +29,8 @@ dependencies:
   google_fonts: ^6.2.0
   google_sign_in: ^6.2.1
   graphview: ^1.2.0
+  image_cropper: ^6.0.0
+  image_picker: ^1.1.1
   provider: ^6.1.2
   rxdart: ^0.27.7
   shared_preferences: ^2.2.3

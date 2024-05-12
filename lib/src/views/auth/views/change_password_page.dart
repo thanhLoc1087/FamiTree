@@ -1,3 +1,4 @@
+import 'package:famitree/src/core/constants/colors.dart';
 import 'package:famitree/src/services/auth/auth_exceptions.dart';
 import 'package:famitree/src/services/auth/auth_service.dart';
 import 'package:flutter/material.dart';
@@ -61,6 +62,7 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColor.background,
       body: Form(
         key: _formKey,
         child: ListView(children: [
@@ -78,14 +80,13 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                 Column(
                   children: [
                     TextFormField(
-                      style: const TextStyle(color: Colors.white),
+                      style: const TextStyle(color: AppColor.text),
                       controller: _currentPasswordController,
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
                         labelText: 'Current Password',
-                        labelStyle: TextStyle(color: Colors.white60),
+                        labelStyle: TextStyle(color: AppColor.text.withAlpha(180)),
                         filled: true,
-                        fillColor: Color(0xFF303030),
-                        border: OutlineInputBorder(),
+                        border: const OutlineInputBorder(),
                       ),
                       obscureText: true,
                       validator: (value) {
@@ -96,14 +97,13 @@ class _ChangePasswordPageState extends State<ChangePasswordPage> {
                       },
                     ),
                     TextFormField(
-                      style: const TextStyle(color: Colors.white),
+                      style: const TextStyle(color: AppColor.text),
                       controller: _newPasswordController,
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
                         labelText: 'New Password',
-                        labelStyle: TextStyle(color: Colors.white60),
+                        labelStyle: TextStyle(color: AppColor.text.withAlpha(180)),
                         filled: true,
-                        fillColor: Color(0xFF303030),
-                        border: OutlineInputBorder(),
+                        border: const OutlineInputBorder(),
                       ),
                       obscureText: true,
                       validator: (value) {

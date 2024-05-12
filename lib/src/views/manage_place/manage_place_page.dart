@@ -28,7 +28,6 @@ class ManagePlacePage extends StatelessWidget {
           elevation: 0,
           centerTitle: true,
           title: const Text("Places"),
-          automaticallyImplyLeading: false
         ),
         body: Container(
           constraints: BoxConstraints(

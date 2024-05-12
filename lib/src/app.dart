@@ -7,6 +7,10 @@ import 'package:famitree/src/views/auth/views/pre_login_page.dart';
 import 'package:famitree/src/views/auth/views/register_page.dart';
 import 'package:famitree/src/views/auth/views/change_password_page.dart';
 import 'package:famitree/src/views/auth/views/verify_page.dart';
+import 'package:famitree/src/views/manage_achievement_type/manage_achievement_type_page.dart';
+import 'package:famitree/src/views/manage_death_cause/manage_death_cause_page.dart';
+import 'package:famitree/src/views/manage_place/manage_place_page.dart';
+import 'package:famitree/src/views/update_profile/update_profile_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -16,9 +20,12 @@ import 'package:provider/provider.dart';
 
 import 'services/notifiers/current_user.dart';
 import 'views/main/main_page.dart';
+import 'views/manage_job/manage_job_page.dart';
+import 'views/manage_relationship_type/manage_relationship_type_page.dart';
 import 'views/settings/settings_controller.dart';
 import 'views/settings/settings_view.dart';
 import 'views/splash/splash_page.dart';
+import 'views/update_profile/views/update_profile_uploader.dart';
 
 /// The Widget that configures your application.
 class MyApp extends StatelessWidget {
@@ -115,6 +122,23 @@ class MyApp extends StatelessWidget {
                         return const ForgotPasswordPage();
                       case AppRouter.verify:
                         return const VerifyEmailPage();
+
+                      /// ADMIN
+                      case AppRouter.manageAchievementType:
+                        return const ManageAchievementTypePage();
+                      case AppRouter.manageRelationshipType:
+                        return const ManageRelationshipTypePage();
+                      case AppRouter.manageJobs:
+                        return const ManageJobPage();
+                      case AppRouter.managePlaces:
+                        return const ManagePlacePage();
+                      case AppRouter.manageDeathCauses:
+                        return const ManageDeathCausePage();
+                      
+                      case AppRouter.updateProfile:
+                        return const UpdateProfilePage();
+                      case AppRouter.updateProfilePic:
+                        return const UserProfileUploader();
 
                       default:
                         return const MainPage();

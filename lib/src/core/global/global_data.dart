@@ -8,7 +8,6 @@ import 'package:famitree/src/data/models/place.dart';
 import 'package:famitree/src/data/models/relationship_type.dart';
 import 'package:famitree/src/data/models/user.dart';
 import 'package:famitree/src/data/repositories/global_repository.dart';
-import 'package:flutter/foundation.dart';
 import 'package:rxdart/rxdart.dart';
 
 class GlobalData {
@@ -27,7 +26,6 @@ class GlobalData {
   }
 
   void listenAll() {
-    debugPrint("ADFDAF");
     _listenStreams();
   }
 

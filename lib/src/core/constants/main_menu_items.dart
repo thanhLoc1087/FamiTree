@@ -6,6 +6,9 @@ class MainMenuItems {
     EMainMenu.chart,
     EMainMenu.profile,
     EMainMenu.settings,
+    EMainMenu.updateProfile,
+    EMainMenu.forgotPassword,
+    EMainMenu.logout,
   ];
 
   static List<EMainMenu> adminMenus = [
@@ -14,5 +17,8 @@ class MainMenuItems {
     EMainMenu.jobs,
     EMainMenu.achievementTypes,
     EMainMenu.deathCauses,
+    EMainMenu.updateProfile,
+    EMainMenu.forgotPassword,
+    EMainMenu.logout,
   ];
 }
