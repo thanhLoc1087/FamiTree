@@ -38,7 +38,7 @@ class Relationship extends Equatable {
   factory Relationship.fromJson(Map<String, dynamic> json) {
     return Relationship(
       type: RelationshipType.fromJson(json: json['type'] as Map<String,dynamic>),
-      member: Member.fromJson(json['member'] as Map<String,dynamic>),
+      member: Member.fromJson(null, json['member'] as Map<String,dynamic>),
       time: DateTime.fromMillisecondsSinceEpoch(json['time'] as int),
     );
   }

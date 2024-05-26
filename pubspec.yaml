@@ -11,9 +11,11 @@ environment:
 
 dependencies:
   bloc: ^8.1.4
+  bloc_concurrency: ^0.2.5
   cached_network_image: ^3.3.1
   cloud_firestore: ^4.16.1
   connectivity: ^3.0.6
+  easy_localization: ^3.0.7
   equatable: ^2.0.5
   firebase_auth: ^4.19.1
   firebase_core: ^2.29.0
@@ -31,6 +33,7 @@ dependencies:
   graphview: ^1.2.0
   image_cropper: ^6.0.0
   image_picker: ^1.1.1
+  intl: ^0.18.1
   provider: ^6.1.2
   rxdart: ^0.27.7
   shared_preferences: ^2.2.3

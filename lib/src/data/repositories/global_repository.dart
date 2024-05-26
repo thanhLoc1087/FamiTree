@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:famitree/src/data/models/achievement_type.dart';
 import 'package:famitree/src/data/models/cause_of_death.dart';
 import 'package:famitree/src/data/models/job.dart';
+import 'package:famitree/src/data/models/member.dart';
 import 'package:famitree/src/data/models/place.dart';
 import 'package:famitree/src/data/models/relationship_type.dart';
 import 'package:famitree/src/services/global/global_remote_service.dart';
@@ -51,6 +52,16 @@ class GlobalRepository {
   }) {
     return remoteService.listenDeathCauses(
       onListen: onListen
+    );
+  }
+
+  Future<StreamSubscription?> listenMyMembers({
+    required Function(List<Member>)? onListen,
+    required String? treeCode,
+  }) {
+    return remoteService.listenMyMembers(
+      onListen: onListen,
+      treeCode: treeCode,
     );
   }
 }

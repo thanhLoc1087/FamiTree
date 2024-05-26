@@ -19,15 +19,15 @@ class _TreeViewPageFromJsonState extends State<TreeViewPageFromJson> {
       {'id': 6, 'label': 'dot'},
       {'id': 7, 'label': 'square'},
       {'id': 8, 'label': 'triangle'},
+      // {'id': 10, 'label': 'triangle 3'},
     ],
     'edges': [
-      {'from': 1, 'to': 2},
+      {'from': 1, 'to': 3},
       {'from': 2, 'to': 3},
-      {'from': 2, 'to': 4},
-      {'from': 2, 'to': 5},
-      {'from': 5, 'to': 6},
+      {'from': 3, 'to': 4},
+      {'from': 3, 'to': 5},
       {'from': 5, 'to': 7},
-      {'from': 6, 'to': 8}
+      {'from': 6, 'to': 7},
     ]
   };
 

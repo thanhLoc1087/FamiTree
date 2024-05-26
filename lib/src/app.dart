@@ -18,7 +18,9 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
+import 'core/utils/screen_util.dart';
 import 'services/notifiers/current_user.dart';
+import 'views/home/bloc/home_page_bloc.dart';
 import 'views/main/main_page.dart';
 import 'views/manage_job/manage_job_page.dart';
 import 'views/manage_relationship_type/manage_relationship_type_page.dart';
@@ -28,7 +30,7 @@ import 'views/splash/splash_page.dart';
 import 'views/update_profile/views/update_profile_uploader.dart';
 
 /// The Widget that configures your application.
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({
     super.key,
     required this.settingsController,
@@ -37,117 +39,137 @@ class MyApp extends StatelessWidget {
   final SettingsController settingsController;
 
   @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  @override
   Widget build(BuildContext context) {
+    ScreenUtils.setPortraitMode();
     // Glue the SettingsController to the MaterialApp.
     //
     // The ListenableBuilder Widget listens to the SettingsController for changes.
     // Whenever the user updates their settings, the MaterialApp is rebuilt.
     return RepositoryProvider(
       create: (context) => AllRepository(),
-      child: ChangeNotifierProvider<CurrentUser>.value(
-        value: CurrentUser(),
-        child: ListenableBuilder(
-          listenable: settingsController,
-          builder: (BuildContext context, Widget? child) {
-            return MaterialApp(
-              // Providing a restorationScopeId allows the Navigator built by the
-              // MaterialApp to restore the navigation stack when a user leaves and
-              // returns to the app after it has been killed while running in the
-              // background.
-              restorationScopeId: 'app',
-
-              localizationsDelegates: const [
-                AppLocalizations.delegate,
-                GlobalMaterialLocalizations.delegate,
-                GlobalWidgetsLocalizations.delegate,
-                GlobalCupertinoLocalizations.delegate,
-              ],
-              supportedLocales: const [
-                Locale('en', ''), // English, no country code
-              ],
-
-              // Use AppLocalizations to configure the correct application title
-              // depending on the user's locale.
-              //
-              // The appTitle is defined in .arb files found in the localization
-              // directory.
-              onGenerateTitle: (BuildContext context) =>
-                  AppLocalizations.of(context)!.appTitle,
-
-              // Define a light and dark color theme. Then, read the user's
-              // preferred ThemeMode (light, dark, or system default) from the
-              // SettingsController to display the correct theme.
-              theme: ThemeData(
-                scaffoldBackgroundColor: Colors.black,
-                // brightness: Brightness.dark,
-                colorScheme: ColorScheme.fromSwatch().copyWith(
-                  primary: AppColor.primary,
-                  secondary: Colors.black,
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider(
+            create: (BuildContext context) => HomePageBloc(
+              RepositoryProvider.of<AllRepository>(context).treeRepository,
+              RepositoryProvider.of<AllRepository>(context).memberRepository,
+            ),
+          ),
+        ],
+        child: ChangeNotifierProvider<CurrentUser>.value(
+          value: CurrentUser(),
+          child: ListenableBuilder(
+            listenable: widget.settingsController,
+            builder: (BuildContext context, Widget? child) {
+              return MaterialApp(
+                // Providing a restorationScopeId allows the Navigator built by the
+                // MaterialApp to restore the navigation stack when a user leaves and
+                // returns to the app after it has been killed while running in the
+                // background.
+                restorationScopeId: 'app',
+                localizationsDelegates: const [
+                  AppLocalizations.delegate,
+                  GlobalMaterialLocalizations.delegate,
+                  GlobalWidgetsLocalizations.delegate,
+                  GlobalCupertinoLocalizations.delegate,
+                ],
+                supportedLocales: const [
+                  Locale('en', ''), // English, no country code
+                ],
+          
+                // Use AppLocalizations to configure the correct application title
+                // depending on the user's locale.
+                //
+                // The appTitle is defined in .arb files found in the localization
+                // directory.
+                onGenerateTitle: (BuildContext context) =>
+                    AppLocalizations.of(context)!.appTitle,
+          
+                // Define a light and dark color theme. Then, read the user's
+                // preferred ThemeMode (light, dark, or system default) from the
+                // SettingsController to display the correct theme.
+                theme: ThemeData(
+                  primarySwatch: Colors.brown,
+                  fontFamily: 'averta',
+                  canvasColor: Colors.transparent,
+                  shadowColor: Colors.transparent,
+                  useMaterial3: false,
+                  scaffoldBackgroundColor: Colors.black,
+                  // brightness: Brightness.dark,
+                  colorScheme: ColorScheme.fromSwatch().copyWith(
+                    primary: AppColor.primary,
+                    secondary: Colors.black,
+                  ),
+                  textTheme: TextTheme(
+                      bodyMedium: GoogleFonts.poppins(
+                          textStyle: const TextStyle(
+                    fontSize: 14,
+                    color: AppColor.text,
+                  ))),
                 ),
-                textTheme: TextTheme(
-                    bodyMedium: GoogleFonts.poppins(
-                        textStyle: const TextStyle(
-                  fontSize: 14,
-                  color: AppColor.text,
-                ))),
-              ),
-              // darkTheme: ThemeData.dark(),
-              themeMode: settingsController.themeMode,
-              home: const SplashPage(),
-
-              // Define a function to handle named routes in order to support
-              // Flutter web url navigation and deep linking.
-              onGenerateRoute: (RouteSettings routeSettings) {
-                return MaterialPageRoute<void>(
-                  settings: routeSettings,
-                  builder: (BuildContext context) {
-                    debugPrint('route ${routeSettings.name}');
-                    switch (routeSettings.name) {
-                      case AppRouter.settings:
-                        return SettingsView(controller: settingsController);
-
-                      case AppRouter.main:
-                        return const MainPage();
-
-                      // AUTHENTICATION
-                      case AppRouter.preLogin:
-                        return const PreLoginPage();
-                      case AppRouter.login:
-                        return const LoginPage();
-                      case AppRouter.register:
-                        return const RegisterPage();
-                      case AppRouter.changePassword:
-                        return const ChangePasswordPage();
-                      case AppRouter.forgotPassword:
-                        return const ForgotPasswordPage();
-                      case AppRouter.verify:
-                        return const VerifyEmailPage();
-
-                      /// ADMIN
-                      case AppRouter.manageAchievementType:
-                        return const ManageAchievementTypePage();
-                      case AppRouter.manageRelationshipType:
-                        return const ManageRelationshipTypePage();
-                      case AppRouter.manageJobs:
-                        return const ManageJobPage();
-                      case AppRouter.managePlaces:
-                        return const ManagePlacePage();
-                      case AppRouter.manageDeathCauses:
-                        return const ManageDeathCausePage();
-                      
-                      case AppRouter.updateProfile:
-                        return const UpdateProfilePage();
-                      case AppRouter.updateProfilePic:
-                        return const UserProfileUploader();
-
-                      default:
-                        return const MainPage();
-                    }
-                  },
-                );
-              },
-            );
-          },
+                // darkTheme: ThemeData.dark(),
+                themeMode: widget.settingsController.themeMode,
+                home: const SplashPage(),
+          
+                // Define a function to handle named routes in order to support
+                // Flutter web url navigation and deep linking.
+                onGenerateRoute: (RouteSettings routeSettings) {
+                  return MaterialPageRoute<void>(
+                    settings: routeSettings,
+                    builder: (BuildContext context) {
+                      debugPrint('route ${routeSettings.name}');
+                      switch (routeSettings.name) {
+                        case AppRouter.settings:
+                          return SettingsView(controller: widget.settingsController);
+          
+                        case AppRouter.main:
+                          return const MainPage();
+          
+                        // AUTHENTICATION
+                        case AppRouter.preLogin:
+                          return const PreLoginPage();
+                        case AppRouter.login:
+                          return const LoginPage();
+                        case AppRouter.register:
+                          return const RegisterPage();
+                        case AppRouter.changePassword:
+                          return const ChangePasswordPage();
+                        case AppRouter.forgotPassword:
+                          return const ForgotPasswordPage();
+                        case AppRouter.verify:
+                          return const VerifyEmailPage();
+          
+                        /// ADMIN
+                        case AppRouter.manageAchievementType:
+                          return const ManageAchievementTypePage();
+                        case AppRouter.manageRelationshipType:
+                          return const ManageRelationshipTypePage();
+                        case AppRouter.manageJobs:
+                          return const ManageJobPage();
+                        case AppRouter.managePlaces:
+                          return const ManagePlacePage();
+                        case AppRouter.manageDeathCauses:
+                          return const ManageDeathCausePage();
+                        
+                        case AppRouter.updateProfile:
+                          return const UpdateProfilePage();
+                        case AppRouter.updateProfilePic:
+                          return const UserProfileUploader();
+          
+                        default:
+                          return const MainPage();
+                      }
+                    },
+                  );
+                },
+              );
+            },
+          ),
         ),
       ),
     );

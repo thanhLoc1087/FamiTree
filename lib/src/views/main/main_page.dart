@@ -113,6 +113,8 @@ class MainPageContentState extends State<MainPageContent> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
         leading: IconButton(
           onPressed: () {
             GlobalVar.scaffoldState.currentState

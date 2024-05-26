@@ -1,5 +1,7 @@
 import 'package:famitree/src/core/constants/colors.dart';
 import 'package:famitree/src/views/common/ordinary_button.dart';
+import 'package:famitree/src/views/home/views/add_new_member_form.dart';
+import 'package:famitree/src/views/home/views/create_tree_form.dart';
 import 'package:flutter/material.dart';
 
 class MyFloatingActionButton extends StatefulWidget {
@@ -41,7 +43,7 @@ class _MyFloatingActionButtonState extends State<MyFloatingActionButton> {
             ),
             FloatingActionButton(
               onPressed: () {
-                // Toggle the state of the menu
+// Toggle the state of the menu
                 _isMenuOpen.value = !value;
               },
               backgroundColor: AppColor.accent,
@@ -57,17 +59,33 @@ class _MyFloatingActionButtonState extends State<MyFloatingActionButton> {
   List<Widget> _additionalButtons(BuildContext context) {
     return [
       OrdinaryButton(
-        onPressed: () {
-          // Handle the action for the first additional button
-          // For example, you can navigate to another screen
+        onPressed: () async {
+          final data = await showDialog(
+            context: context,
+            builder: (context) {
+              return const CreateTreeForm(
+              );
+            },
+          );
+          if (data != null) {
+            debugPrint(data);
+          }
         },
         text: 'Button 1',
       ),
       const SizedBox(height: 20,),
       OrdinaryButton(
-        onPressed: () {
-          // Handle the action for the second additional button
-          // For example, you can show a dialog
+        onPressed: () async {
+          final data = await showDialog(
+            context: context,
+            builder: (context) {
+              return const AddMemberForm(
+              );
+            },
+          );
+          if (data != null) {
+            debugPrint(data);
+          }
         },
         text: 'Button 2',
       ),

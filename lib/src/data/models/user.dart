@@ -1,9 +1,12 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
+
 import 'package:famitree/src/core/constants/collections.dart';
 import 'package:famitree/src/core/utils/check_connectivity.dart';
 import 'package:famitree/src/core/utils/converter.dart';
-import 'package:flutter/material.dart';
 
 import '../../services/auth/auth_service.dart';
 class MyUser {
@@ -13,12 +16,16 @@ class MyUser {
   String? profileImage;
   late bool deleted;
   final bool isAdmin;
+  final String? treeCode;
+  final String? oldCode;
 
   static CollectionReference dbUsers =
       FirebaseFirestore.instance.collection('users');
 
   MyUser({
     this.profileImage,
+    this.treeCode,
+    this.oldCode,
     required this.uid,
     required this.name,
     required this.email,
@@ -92,13 +99,40 @@ class MyUser {
     }
   }
 
+  static Future<int> updateUser(
+    MyUser user, {
+    Map<String, dynamic>? updateData,
+  }) async {
+    if (updateData != null) {
+      await FirebaseFirestore.instance.collection(AppCollections.users)
+            .doc(user.uid).update(updateData);
+    } else {
+      await FirebaseFirestore.instance.collection(AppCollections.users)
+            .doc(user.uid).update(user.toJson());
+    }
+    return 1;
+  }
+
+  static Future<int> updateTreeCode(
+    MyUser user,
+    String treeCode
+  ) => updateUser(
+    user, 
+    updateData: {
+      'tree_code': treeCode,
+      'old_code': user.treeCode
+    }
+  );
+
   Map<String, dynamic> toJson() => {
     'uid': uid,
     'profile_image': profileImage,
     'name': name,
     'email': email,
     'deleted': deleted,
-    'is_admin': isAdmin
+    'is_admin': isAdmin,
+    'tree_code': treeCode,
+    'old_code': oldCode,
   };
 
   factory MyUser.fromJson(Map<String, dynamic> json) => MyUser(
@@ -108,5 +142,29 @@ class MyUser {
     email: cvToString(json['email']),
     deleted: cvToBool(json['deleted']),
     isAdmin: cvToBool(json['is_admin']),
+    treeCode: cvToString(json['tree_code']),
+    oldCode: cvToString(json['old_code']),
   );
+
+  MyUser copyWith({
+    String? uid,
+    String? email,
+    String? name,
+    String? profileImage,
+    bool? deleted,
+    bool? isAdmin,
+    String? treeCode,
+    String? oldCode,
+  }) {
+    return MyUser(
+      uid: uid ?? this.uid,
+      email: email ?? this.email,
+      name: name ?? this.name,
+      profileImage: profileImage ?? this.profileImage,
+      deleted: deleted ?? this.deleted,
+      isAdmin: isAdmin ?? this.isAdmin,
+      treeCode: treeCode ?? this.treeCode,
+      oldCode: oldCode ?? this.oldCode,
+    );
+  }
 }

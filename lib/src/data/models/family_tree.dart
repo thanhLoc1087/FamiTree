@@ -1,53 +1,71 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'dart:convert';
-
 import 'package:equatable/equatable.dart';
+import 'package:famitree/src/core/utils/converter.dart';
 
 class FamilyTree extends Equatable {
   final String id;
+  final String name;
+  final String treeCode;
+  final List<String> editors;
   final DateTime createdAt;
   final DateTime lastUpdatedAt;
+  final bool deleted;
   const FamilyTree({
     required this.id,
+    required this.name,
+    required this.treeCode,
     required this.createdAt,
     required this.lastUpdatedAt,
+    this.deleted = false,
+    this.editors = const [],
   });
 
   FamilyTree copyWith({
     String? id,
+    String? name,
+    String? treeCode,
     DateTime? createdAt,
     DateTime? lastUpdatedAt,
+    List<String>? editors,
+    bool? deleted,
   }) {
     return FamilyTree(
       id: id ?? this.id,
+      name: name ?? this.name,
+      treeCode: treeCode ?? this.treeCode,
+      editors: editors ?? this.editors,
       createdAt: createdAt ?? this.createdAt,
       lastUpdatedAt: lastUpdatedAt ?? this.lastUpdatedAt,
+      deleted: deleted ?? this.deleted,
     );
   }
 
-  Map<String, dynamic> toMap() {
+  Map<String, dynamic> toJson() {
     return <String, dynamic>{
       'id': id,
-      'createdAt': createdAt.millisecondsSinceEpoch,
-      'lastUpdatedAt': lastUpdatedAt.millisecondsSinceEpoch,
+      'name': name,
+      'editors': editors,
+      'treeCode': treeCode,
+      'createdAt': createdAt,
+      'lastUpdatedAt': lastUpdatedAt,
+      'deleted': deleted,
     };
   }
 
-  factory FamilyTree.fromMap(Map<String, dynamic> map) {
+  factory FamilyTree.fromJson(String id, Map<String, dynamic> map) {
     return FamilyTree(
-      id: map['id'] as String,
-      createdAt: DateTime.fromMillisecondsSinceEpoch(map['createdAt'] as int),
-      lastUpdatedAt: DateTime.fromMillisecondsSinceEpoch(map['lastUpdatedAt'] as int),
+      id: id,
+      name: cvToString(map['name']),
+      treeCode: cvToString(map['treeCode']),
+      createdAt: cvToDate(map['createdAt']),
+      lastUpdatedAt: cvToDate(map['lastUpdatedAt']),
+      editors: map['editors'],
+      deleted: map['deleted'],
     );
   }
-
-  String toJson() => json.encode(toMap());
-
-  factory FamilyTree.fromJson(String source) => FamilyTree.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
   bool get stringify => true;
 
   @override
-  List<Object> get props => [id, createdAt, lastUpdatedAt];
+  List<Object> get props => [id, name, treeCode, createdAt, lastUpdatedAt, deleted];
 }

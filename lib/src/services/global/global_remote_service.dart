@@ -8,6 +8,7 @@ import 'package:famitree/src/core/utils/common_utils.dart';
 import 'package:famitree/src/data/models/achievement_type.dart';
 import 'package:famitree/src/data/models/cause_of_death.dart';
 import 'package:famitree/src/data/models/job.dart';
+import 'package:famitree/src/data/models/member.dart';
 import 'package:famitree/src/data/models/place.dart';
 import 'package:famitree/src/data/models/relationship_type.dart';
 
@@ -127,6 +128,35 @@ class GlobalRemoteService {
       );
       if (onListen != null) {
         onListen(causes);
+      }
+    });
+    return subs;
+  }
+
+  Future<StreamSubscription?> listenMyMembers({
+    Function(
+      List<Member>,
+    )? onListen,
+    required String? treeCode,
+  }) async {
+    if (treeCode == null) {
+      return null;
+    }
+    final membersQuery = FirebaseFirestore.instance
+        .collection(AppCollections.members)
+        .where('tree_code', isEqualTo: treeCode)
+        .snapshots();
+
+    final subs = membersQuery.listen((event) async {
+      final members = event.docs
+          .map((e) => Member.fromJson(e.id, e.data()))
+          .toList();
+      members.sort(
+        (a, b) => removeVietnameseTones(a.name.toLowerCase().trim())
+            .compareTo(removeVietnameseTones(b.name.toLowerCase().trim())),
+      );
+      if (onListen != null) {
+        onListen(members);
       }
     });
     return subs;

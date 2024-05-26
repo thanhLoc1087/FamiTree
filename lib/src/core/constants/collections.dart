@@ -7,4 +7,6 @@ class AppCollections {
   static String relationshipTypes = "relationship_types";
   static String deathCauses = "death_causes";
   static String jobs = "jobs";
+  static String trees = "trees";
+  static String members = "members";
 }
