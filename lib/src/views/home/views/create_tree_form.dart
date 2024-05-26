@@ -133,6 +133,7 @@ class _CreateTreeFormState extends State<CreateTreeForm> {
         if (state is CompleteUpdateHomePageState) {
           Toasty.show("Create tree successfully!", context: context);
           Navigator.of(context).pop();
+          BlocProvider.of<HomePageBloc>(context).add(const LoadDataHomeEvent());
         } else if (state is ErrorUpdateHomePageState) {
           Toasty.show(state.errorMessage, context: context);
         }

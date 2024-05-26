@@ -7,6 +7,7 @@ import 'job.dart';
 import 'place.dart';
 import 'relationship.dart';
 
+// ignore: must_be_immutable
 class Member extends Equatable {
   final String id;
   final String name;
@@ -18,11 +19,22 @@ class Member extends Equatable {
   final String treeCode;
   final DateTime birthday;
   final String? image;
-  final Member? spouse;
-  final List<Member>? children;
+  Member? spouse;
+  List<Member>? children;
   final bool isMale;
+
+  void setSpouse(Member spouse) {
+    this.spouse = spouse;
+  }
+
+  void addChild(Member spouse) {
+    children ??=[];
+    children!.add(spouse);
+  }
+
+  bool get isDead => death != null;
   
-  const Member({
+  Member({
     this.spouse, 
     this.children, 
     required this.id,
@@ -39,6 +51,8 @@ class Member extends Equatable {
   });
 
   Member copyWith({
+    Member? spouse,
+    List<Member>? children,
     String? id,
     String? name,
     Relationship? relationship,
@@ -63,6 +77,8 @@ class Member extends Equatable {
       job: job ?? this.job,
       image: image ?? this.image,
       isMale: isMale ?? this.isMale,
+      spouse: spouse ?? this.spouse,
+      children: children ?? this.children,
     );
   }
 
@@ -88,6 +104,7 @@ class Member extends Equatable {
 
   Map<String, dynamic> toJson() {
     return <String, dynamic>{
+      'id': id,
       'name': name,
       'relationship': relationship?.toJson(),
       'homeland': homeland.toJson(),

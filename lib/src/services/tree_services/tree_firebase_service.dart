@@ -6,42 +6,76 @@ import 'package:famitree/src/data/models/member.dart';
 import 'package:famitree/src/data/models/pair.dart';
 import 'package:famitree/src/data/models/user.dart';
 import 'package:famitree/src/services/member_services/member_firebase_service.dart';
+import 'package:famitree/src/services/notifiers/current_user.dart';
 
 class TreeRemoteService {
   final _ref =
       FirebaseFirestore.instance.collection(AppCollections.trees);
+  final _memberService = MemberRemoteService();
 
-  Future<List<FamilyTree>> getAllTrees() async {
-    final result = await _ref
-        .where("deleted", isEqualTo: false)
-        .get();
+  // Future<List<FamilyTree>> getAllTrees() async {
+  //   final result = await _ref
+  //       .where("deleted", isEqualTo: false)
+  //       .get();
 
-    List<FamilyTree> causes = result.docs
-        .map((e) => FamilyTree.fromJson(e.id, e.data()))
-        .toList();
+  //   List<FamilyTree> causes = result.docs
+  //       .map((e) => FamilyTree.fromJson(id: e.id, map: e.data()))
+  //       .toList();
 
-    return causes;
-  }
+  //   return causes;
+  // }
 
   Future<FamilyTree?> getTreeById(String id) async {
     final data = await _ref
         .doc(id)
         .get();
     if (data.exists) {
-      return FamilyTree.fromJson(data.id, data.data()!);
+      final treeCode = cvToString(data['treeCode']);
+      if (treeCode.isEmpty) {
+        return null;
+      }
+      final member = await getFirstMember(treeCode);
+      if (member != null) {
+        return FamilyTree.fromJson(id: data.id, map: data.data()!, firstMember: member);
+      }
     }
     return null;
   }
 
   Future<FamilyTree?> getTreeByCode(String code) async {
     final data = await _ref
-        .where("code", isEqualTo: code)
+        .where("treeCode", isEqualTo: code)
         .limit(1)
         .get();
-    if (data.size == 1) {
-      return FamilyTree.fromJson(data.docs.first.id, data.docs.first.data());
+    final member = await getFirstMember(code);
+    if (data.size == 1 && member != null) {
+      return FamilyTree.fromJson(
+        id: data.docs.first.id, 
+        map: data.docs.first.data(),
+        firstMember: member
+      );
     }
     return null;
+  }
+
+  Future<Member?> getFirstMember(String treeCode) async {
+    final members = await _memberService.getMembersByTreeCode(treeCode);
+    final mapMember = <String, Member> {
+      for(var member in members)
+        member.id: member
+    };
+    Member? firstMember;
+    for (var mem in members) {
+      final relationship = mem.relationship;
+      if (relationship == null) {
+        firstMember = mem;
+      } else if (relationship.type.id == "spouse") {
+        mapMember[relationship.member.id]?.setSpouse(mem);
+      } else if (relationship.type.id == "child") {
+        mapMember[relationship.member.id]?.addChild(mem);
+      }
+    }
+    return firstMember;
   }
 
   Future<bool> addTree(
@@ -59,12 +93,12 @@ class TreeRemoteService {
       }
       
       bool failed = false;
-      final memberId = await MemberRemoteService().addMember(firstMember);
+      final memberId = await _memberService.addMember(firstMember);
       failed = memberId == null;
 
       if (!failed) {
         await Future.wait([
-          _ref.add(tree.copyWith(editors: [memberId]).toJson()),
+          _ref.add(tree.copyWith(editors: [CurrentUser().user.uid]).toJson()),
           MyUser.updateTreeCode(user, tree.treeCode),
         ]);
         return true;

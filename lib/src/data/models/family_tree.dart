@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:famitree/src/core/utils/converter.dart';
+import 'package:famitree/src/data/models/member.dart';
 
 class FamilyTree extends Equatable {
   final String id;
@@ -9,12 +10,14 @@ class FamilyTree extends Equatable {
   final DateTime createdAt;
   final DateTime lastUpdatedAt;
   final bool deleted;
+  final Member? firstMember;
   const FamilyTree({
     required this.id,
     required this.name,
     required this.treeCode,
     required this.createdAt,
     required this.lastUpdatedAt,
+    this.firstMember,
     this.deleted = false,
     this.editors = const [],
   });
@@ -27,9 +30,11 @@ class FamilyTree extends Equatable {
     DateTime? lastUpdatedAt,
     List<String>? editors,
     bool? deleted,
+    Member? firstMember,
   }) {
     return FamilyTree(
       id: id ?? this.id,
+      firstMember: firstMember ?? this.firstMember,
       name: name ?? this.name,
       treeCode: treeCode ?? this.treeCode,
       editors: editors ?? this.editors,
@@ -51,15 +56,20 @@ class FamilyTree extends Equatable {
     };
   }
 
-  factory FamilyTree.fromJson(String id, Map<String, dynamic> map) {
+  factory FamilyTree.fromJson({
+    required String id, 
+    required Map<String, dynamic> map,
+    required Member firstMember,
+  }) {
     return FamilyTree(
       id: id,
       name: cvToString(map['name']),
       treeCode: cvToString(map['treeCode']),
       createdAt: cvToDate(map['createdAt']),
       lastUpdatedAt: cvToDate(map['lastUpdatedAt']),
-      editors: map['editors'],
+      editors: <String>[...map['editors']],
       deleted: map['deleted'],
+      firstMember: firstMember,
     );
   }
 
@@ -67,5 +77,5 @@ class FamilyTree extends Equatable {
   bool get stringify => true;
 
   @override
-  List<Object> get props => [id, name, treeCode, createdAt, lastUpdatedAt, deleted];
+  List<Object?> get props => [id, name, treeCode, createdAt, lastUpdatedAt, deleted, firstMember];
 }

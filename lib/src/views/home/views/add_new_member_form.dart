@@ -13,9 +13,7 @@ import 'package:famitree/src/views/common/keyboard_dismiss.dart';
 import 'package:famitree/src/views/common/member_filter.dart';
 import 'package:famitree/src/views/common/place_filter.dart';
 import 'package:famitree/src/views/common/relationship_type_filter.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../bloc/home_page_bloc.dart';
@@ -71,7 +69,7 @@ class _AddMemberFormState extends State<AddMemberForm> {
     super.dispose();
   }
 
-  _submit() {
+  _submit() async {
     String memberName = _memberNameController.text.trim();
 
     if (memberName.isEmpty) {

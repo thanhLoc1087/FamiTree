@@ -41,7 +41,11 @@ class RelationshipTypeRemoteService {
       if (countExistedName.a + countExistedName.b > 0) {
         return false;
       }
-      await _ref.add(type.toJson());
+      if (type.id.isNotEmpty) {
+        await _ref.doc(type.id).set(type.toJson());
+      } else {
+        await _ref.add(type.toJson());
+      }
       return true;
     } catch (_) {
       return false;

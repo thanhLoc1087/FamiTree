@@ -15,8 +15,9 @@ import 'package:famitree/src/data/models/job.dart';
 import 'package:famitree/src/data/models/member.dart';
 import 'package:famitree/src/data/models/place.dart';
 import 'package:famitree/src/data/models/relationship_type.dart';
+import 'package:famitree/src/data/models/user.dart';
 import 'package:famitree/src/data/repositories/member_repository.dart';
-import 'package:famitree/src/data/repositories/tree_repoditory.dart';
+import 'package:famitree/src/data/repositories/tree_repository.dart';
 import 'package:famitree/src/services/notifiers/current_user.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -56,6 +57,7 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
     on<AddMemberEvent>(_addMember);
     on<AddAchievementEvent>(_addAchievement);
     on<AddDeathEvent>(_addDeath);
+    on<JoinTreeHomeEvent>(_joinTree);
     _streamListen();
   }
 
@@ -115,6 +117,11 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
     final members = await _memberRepository.getMembersByTreeCode(
       CurrentUser().user.treeCode ?? ''
     );
+
+    FamilyTree? tree;
+    if (state.myTree == null && CurrentUser().user.treeCode != null) {
+      tree = await _treeRepository.getTreeByCode(CurrentUser().user.treeCode!);
+    }
     final mystate = state.copyWith(
       places: GlobalData().places,
       jobs: GlobalData().jobs,
@@ -122,6 +129,7 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
       relationshipTypes: GlobalData().relationshipTypes,
       deathCauses: GlobalData().deathCauses,
       members: members,
+      myTree: tree,
     );
     emit(mystate);
   }
@@ -242,6 +250,24 @@ class HomePageBloc extends Bloc<HomePageEvent, HomePageState> {
     final success = await _memberRepository.addDeath(
       event.member,
       event.death,
+    );
+
+    if (success == 1) {
+      DialogUtils.hideLoading();
+      emit(CompleteUpdateHomePageState.fromHomePageState(state));
+    } else {
+      DialogUtils.hideLoading();
+      emit(ErrorUpdateHomePageState.fromHomePageState(
+        state,
+        errorMessage: "Failed to add member death!",
+      ));
+    }
+  }
+
+  Future<FutureOr<void>> _joinTree(JoinTreeHomeEvent event, Emitter<HomePageState> emit) async {
+    final success = await MyUser.updateTreeCode(
+      CurrentUser().user,
+      event.code
     );
 
     if (success == 1) {

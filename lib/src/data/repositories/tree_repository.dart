@@ -10,9 +10,6 @@ class TreeRepository {
     remoteService = TreeRemoteService();
   }
 
-  Future<List<FamilyTree>> getAllTrees()
-  => remoteService.getAllTrees();
-
   Future<FamilyTree?> getTreeById(String id)
   => remoteService.getTreeById(id);
 

@@ -70,3 +70,18 @@ class RelationshipType extends Equatable {
     );
   }
 }
+
+const relationshipTypes = [
+  RelationshipType(
+    id: 'spouse', 
+    name: 'Spouse', 
+    description: 'When two people are IN LOVE and married', 
+    quantity: 0
+  ),
+  RelationshipType(
+    id: 'child', 
+    name: 'Child', 
+    description: 'Birth or Adoption', 
+    quantity: 0
+  ),
+];

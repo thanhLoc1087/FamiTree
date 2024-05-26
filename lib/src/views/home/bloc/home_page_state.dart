@@ -10,6 +10,7 @@ class HomePageState extends Equatable {
     this.deathCauses = const [],
     this.members = const [],
     this.isLoading = false,
+    this.myTree,
   });
 
   final bool isLoading;
@@ -19,9 +20,11 @@ class HomePageState extends Equatable {
   final List<RelationshipType> relationshipTypes;
   final List<CauseOfDeath> deathCauses;
   final List<Member> members;
+
+  final FamilyTree? myTree;
   
   @override
-  List<Object> get props => [ 
+  List<Object?> get props => [ 
     isLoading, 
     places,
     jobs,
@@ -29,6 +32,7 @@ class HomePageState extends Equatable {
     relationshipTypes,
     deathCauses,
     members,
+    myTree,
   ];
 
   HomePageState copyWith({
@@ -39,6 +43,7 @@ class HomePageState extends Equatable {
     List<RelationshipType>? relationshipTypes,
     List<CauseOfDeath>? deathCauses,
     List<Member>? members,
+    FamilyTree? myTree,
   }) {
     return HomePageState(
       isLoading: isLoading ?? this.isLoading,
@@ -48,6 +53,7 @@ class HomePageState extends Equatable {
       relationshipTypes: relationshipTypes ?? this.relationshipTypes,
       deathCauses: deathCauses ?? this.deathCauses,
       members: members ?? this.members,
+      myTree: myTree ?? this.myTree,
     );
   }
 }

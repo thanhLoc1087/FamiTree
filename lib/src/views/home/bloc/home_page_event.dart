@@ -69,3 +69,9 @@ class RestoreTreeHomeEvent extends HomePageEvent {
 
   const RestoreTreeHomeEvent(this.item);
 }
+
+class JoinTreeHomeEvent extends HomePageEvent {
+  final String code;
+
+  const JoinTreeHomeEvent(this.code);
+}

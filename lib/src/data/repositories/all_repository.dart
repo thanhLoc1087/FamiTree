@@ -4,7 +4,7 @@ import 'package:famitree/src/data/repositories/death_cause_repository.dart';
 import 'package:famitree/src/data/repositories/member_repository.dart';
 import 'package:famitree/src/data/repositories/place_repository.dart';
 import 'package:famitree/src/data/repositories/relationship_type_repository.dart';
-import 'package:famitree/src/data/repositories/tree_repoditory.dart';
+import 'package:famitree/src/data/repositories/tree_repository.dart';
 
 import 'job_repository.dart';
 
