@@ -1,14 +1,14 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:famitree/src/core/constants/colors.dart';
-import 'package:famitree/src/core/constants/images_path.dart';
 import 'package:famitree/src/core/utils/screen_util.dart';
-import 'package:famitree/src/data/models/achievement.dart';
-import 'package:famitree/src/data/models/achievement_type.dart';
+import 'package:famitree/src/data/models/cause_of_death.dart';
+import 'package:famitree/src/data/models/death.dart';
 import 'package:famitree/src/data/models/member.dart';
-import 'package:famitree/src/views/common/achievement_type_filter.dart';
+import 'package:famitree/src/data/models/place.dart';
 import 'package:famitree/src/views/common/day_picker.dart';
+import 'package:famitree/src/views/common/death_cause_filter.dart';
 import 'package:famitree/src/views/common/keyboard_dismiss.dart';
 import 'package:famitree/src/views/common/member_filter.dart';
+import 'package:famitree/src/views/common/place_filter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -16,10 +16,11 @@ import '../bloc/home_page_bloc.dart';
 
 class MemberDeathForm extends StatefulWidget {
   const MemberDeathForm({
-    super.key, this.selectedMember,
+    super.key, this.selectedMember, this.death, 
   });
 
   final Member? selectedMember;
+  final Death? death;
 
   @override
   State<MemberDeathForm> createState() => _MemberDeathFormState();
@@ -28,15 +29,18 @@ class MemberDeathForm extends StatefulWidget {
 class _MemberDeathFormState extends State<MemberDeathForm> {
   String? generalError;
 
-  AchievementType? achievementType;
+  CauseOfDeath? cause;
   Member? selectedMember;
   late ValueNotifier<DateTime> date;
+  Place? place;
 
   @override
   void initState() {
     super.initState();
     selectedMember = widget.selectedMember;
-    date = ValueNotifier(DateTime.now());
+    date = ValueNotifier(widget.death?.time ?? DateTime.now());
+    cause = widget.death?.cause;
+    place = widget.death?.place;
   }
 
   @override
@@ -58,21 +62,28 @@ class _MemberDeathFormState extends State<MemberDeathForm> {
       return;
     }
 
-    if (achievementType == null) {
+    if (cause == null) {
       setState(() {
-        generalError = "Choose achievement type";
+        generalError = "Choose cause";
       });
       return;
     }
 
-    Achievement newItem = Achievement(
-      id: '', 
-      type: achievementType!, 
-      time: date.value
+    if (place == null) {
+      setState(() {
+        generalError = "Choose place";
+      });
+      return;
+    }
+
+    Death newItem = Death(
+      cause: cause!, 
+      time: date.value,
+      place: place!
     );
 
     BlocProvider.of<HomePageBloc>(context)
-        .add(AddAchievementEvent(selectedMember!, newItem));
+        .add(AddDeathEvent(selectedMember!, newItem));
   }
 
   @override
@@ -112,8 +123,8 @@ class _MemberDeathFormState extends State<MemberDeathForm> {
                             Center(
                               child: Text(
                                 widget.selectedMember != null ? 
-                                  "Add ${widget.selectedMember!.name}'s achievement" :
-                                  "Add member Achievement",
+                                  "Add ${widget.selectedMember!.name}'s loss" :
+                                  "Add member Loss",
                                 style: const TextStyle(
                                   color: AppColor.text,
                                   fontSize: 20,
@@ -123,39 +134,7 @@ class _MemberDeathFormState extends State<MemberDeathForm> {
                             ),
                             const SizedBox(height: 10),
 
-                            if (widget.selectedMember != null) ... [
-                              Row(
-                                children: [
-                                  selectedMember!.image?.isNotEmpty == true ? 
-                                  CircleAvatar(
-                                      radius: 60,
-                                      backgroundImage: CachedNetworkImageProvider(selectedMember!.image!),
-                                    ) : const CircleAvatar(
-                                      radius: 60,
-                                      backgroundImage: AssetImage(AppImage.defaultProfile),
-                                    ),
-                                  Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        selectedMember!.name,
-                                        style: const TextStyle(
-                                          color: AppColor.text,
-                                          fontWeight: FontWeight.w500
-                                        ),
-                                      ),
-                                      Text(
-                                        '${selectedMember!.homeland.name} - ${selectedMember!.homeland.address}',
-                                        style: const TextStyle(
-                                          color: AppColor.text,
-                                          fontWeight: FontWeight.w500
-                                        ),
-                                      ),
-                                    ],
-                                  )
-                                ],
-                              ),
-                            ] else ...[
+                            if (widget.selectedMember == null) ...[
                               const Text(
                                 "Member",
                                 style: TextStyle(
@@ -181,26 +160,9 @@ class _MemberDeathFormState extends State<MemberDeathForm> {
                                 },
                               ),
                             ],
-                            const SizedBox(height: 10),
-                            LayoutBuilder(
-                              builder: (context, constraints) {
-                                return BlocBuilder<HomePageBloc, HomePageState>(
-                                  builder: (context, state) {
-                                    return AchievementTypeFilter(
-                                      allValues: state.achievementTypes,
-                                      onSelected: (selected) {
-                                        achievementType = selected;
-                                      },
-                                      initText: achievementType?.name ?? "",
-                                      width: constraints.maxWidth,
-                                    );
-                                  },
-                                );
-                              },
-                            ),
                             const SizedBox(width: 10),
                             const Text(
-                              "Relationship type",
+                              "Cause:",
                               style: TextStyle(
                                 color: AppColor.text,
                                 fontSize: 17,
@@ -212,12 +174,12 @@ class _MemberDeathFormState extends State<MemberDeathForm> {
                               builder: (context, constraints) {
                                 return BlocBuilder<HomePageBloc, HomePageState>(
                                   builder: (context, state) {
-                                    return AchievementTypeFilter(
-                                      allValues: state.achievementTypes,
+                                    return DeathCauseFilter(
+                                      allValues: state.deathCauses,
                                       onSelected: (type) {
-                                        achievementType = type;
+                                        cause = type;
                                       },
-                                      initText: achievementType?.name ?? "",
+                                      initText: cause?.name ?? "",
                                       width: constraints.maxWidth,
                                     );
                                   },
@@ -247,12 +209,29 @@ class _MemberDeathFormState extends State<MemberDeathForm> {
                             ),
                             const SizedBox(height: 10),
                             const Text(
-                              "Job",
+                              "Place:",
                               style: TextStyle(
                                 color: AppColor.text,
                                 fontSize: 17,
                                 fontWeight: FontWeight.w400,
                               ),
+                            ),
+                            const SizedBox(height: 10),
+                            LayoutBuilder(
+                              builder: (context, constraints) {
+                                return BlocBuilder<HomePageBloc, HomePageState>(
+                                  builder: (context, state) {
+                                    return PlaceFilter(
+                                      allValues: state.places,
+                                      onSelected: (type) {
+                                        place = type;
+                                      },
+                                      initText: place?.name ?? "",
+                                      width: constraints.maxWidth,
+                                    );
+                                  },
+                                );
+                              },
                             ),
                             if (generalError != null) ...[
                               const SizedBox(height: 10),

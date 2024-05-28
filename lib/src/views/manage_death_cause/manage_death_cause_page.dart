@@ -1,4 +1,5 @@
 import 'package:famitree/src/core/constants/colors.dart';
+import 'package:famitree/src/core/constants/text_style.dart';
 import 'package:famitree/src/core/utils/toasty.dart';
 import 'package:famitree/src/data/models/cause_of_death.dart';
 import 'package:famitree/src/data/repositories/all_repository.dart';
@@ -25,7 +26,9 @@ class ManageDeathCausePage extends StatelessWidget {
         appBar: AppBar(
           elevation: 0,
           centerTitle: true,
-          title: const Text("Death Causes"),
+          leading: const BackButton(color: AppColor.primary,),
+          backgroundColor: Colors.transparent,
+          title: Text("Death Causes", style: AppTextStyles.header,),
         ),
         body: Container(
           constraints: BoxConstraints(

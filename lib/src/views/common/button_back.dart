@@ -1,3 +1,4 @@
+import 'package:famitree/src/core/constants/colors.dart';
 import 'package:flutter/material.dart';
 
 class ButtonBack extends StatelessWidget {
@@ -20,6 +21,7 @@ class ButtonBack extends StatelessWidget {
           () {
             Navigator.pop(context);
           },
+      color: customColor ?? AppColor.primary,
       icon: Icon(
         showCloseButton ? Icons.delete : Icons.arrow_back
       ),

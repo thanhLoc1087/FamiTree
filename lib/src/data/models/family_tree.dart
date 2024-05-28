@@ -6,6 +6,7 @@ class FamilyTree extends Equatable {
   final String id;
   final String name;
   final String treeCode;
+  final String viewCode;
   final List<String> editors;
   final DateTime createdAt;
   final DateTime lastUpdatedAt;
@@ -15,6 +16,7 @@ class FamilyTree extends Equatable {
     required this.id,
     required this.name,
     required this.treeCode,
+    required this.viewCode,
     required this.createdAt,
     required this.lastUpdatedAt,
     this.firstMember,
@@ -26,6 +28,7 @@ class FamilyTree extends Equatable {
     String? id,
     String? name,
     String? treeCode,
+    String? viewCode,
     DateTime? createdAt,
     DateTime? lastUpdatedAt,
     List<String>? editors,
@@ -37,6 +40,7 @@ class FamilyTree extends Equatable {
       firstMember: firstMember ?? this.firstMember,
       name: name ?? this.name,
       treeCode: treeCode ?? this.treeCode,
+      viewCode: viewCode ?? this.viewCode,
       editors: editors ?? this.editors,
       createdAt: createdAt ?? this.createdAt,
       lastUpdatedAt: lastUpdatedAt ?? this.lastUpdatedAt,
@@ -50,6 +54,7 @@ class FamilyTree extends Equatable {
       'name': name,
       'editors': editors,
       'treeCode': treeCode,
+      'viewCode': viewCode,
       'createdAt': createdAt,
       'lastUpdatedAt': lastUpdatedAt,
       'deleted': deleted,
@@ -65,6 +70,7 @@ class FamilyTree extends Equatable {
       id: id,
       name: cvToString(map['name']),
       treeCode: cvToString(map['treeCode']),
+      viewCode: cvToString(map['viewCode']),
       createdAt: cvToDate(map['createdAt']),
       lastUpdatedAt: cvToDate(map['lastUpdatedAt']),
       editors: <String>[...map['editors']],
@@ -77,5 +83,5 @@ class FamilyTree extends Equatable {
   bool get stringify => true;
 
   @override
-  List<Object?> get props => [id, name, treeCode, createdAt, lastUpdatedAt, deleted, firstMember];
+  List<Object?> get props => [id, name, treeCode, viewCode, createdAt, lastUpdatedAt, deleted, firstMember];
 }

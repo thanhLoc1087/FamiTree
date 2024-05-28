@@ -11,7 +11,6 @@ import 'package:famitree/src/views/common/day_picker.dart';
 import 'package:famitree/src/views/common/keyboard_dismiss.dart';
 import 'package:famitree/src/views/common/place_filter.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../common/job_filter.dart';
@@ -29,13 +28,16 @@ class CreateTreeForm extends StatefulWidget {
 class _CreateTreeFormState extends State<CreateTreeForm> {
   final _nameController = TextEditingController();
   final _codeController = TextEditingController();
+  final _viewCodeController = TextEditingController();
 
   final _nameFocus = FocusNode();
   final _codeFocus = FocusNode();
+  final _viewCodeFocus = FocusNode();
 
   String? errorName;
   String? errorMemberName;
   String? errorCode;
+  String? errorViewCode;
   String? generalError;
 
   final _memberNameController = TextEditingController();
@@ -58,6 +60,7 @@ class _CreateTreeFormState extends State<CreateTreeForm> {
   void dispose() {
     _nameController.dispose();
     _codeController.dispose();
+    _viewCodeController.dispose();
     _memberNameController.dispose();
 
     _nameFocus.dispose();
@@ -70,6 +73,7 @@ class _CreateTreeFormState extends State<CreateTreeForm> {
   _submit() {
     String name = _nameController.text.trim();
     String code = _codeController.text.trim();
+    String viewCode = _viewCodeController.text.trim();
     String memberName = _memberNameController.text.trim();
 
     if (name.isEmpty) {
@@ -107,6 +111,7 @@ class _CreateTreeFormState extends State<CreateTreeForm> {
         id: '',
         name: name,
         treeCode: code,
+        viewCode: viewCode,
         createdAt: DateTime.now(),
         lastUpdatedAt: DateTime.now(),
         editors:[CurrentUser().user.uid]
@@ -249,7 +254,7 @@ class _CreateTreeFormState extends State<CreateTreeForm> {
                               decoration: InputDecoration(
                                 counterText: "",
                                 hintText:
-                                    "You can share your tree with others with Tree Code",
+                                    "Others can join your tree with Tree Code",
                                 border: OutlineInputBorder(
                                   borderSide:
                                       const BorderSide(color: AppColor.text),
@@ -279,6 +284,64 @@ class _CreateTreeFormState extends State<CreateTreeForm> {
                                     errorCode != null) {
                                   setState(() {
                                     errorCode = null;
+                                  });
+                                }
+                              },
+                              textInputAction: TextInputAction.next,
+                              onFieldSubmitted: (value) {
+                                _viewCodeFocus.nextFocus();
+                              },
+                              style: const TextStyle(
+                                color: AppColor.text,
+                              ),
+                            ),
+                            const SizedBox(height: 15),
+                            const Text(
+                              "Tree View Code",
+                              style: TextStyle(
+                                color: AppColor.text,
+                                fontSize: 17,
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                            const SizedBox(height: 10),
+                            TextFormField(
+                              controller: _viewCodeController,
+                              focusNode: _viewCodeFocus,
+                              textCapitalization: TextCapitalization.words,
+                              decoration: InputDecoration(
+                                counterText: "",
+                                hintText:
+                                    "You can share your tree with others with Tree View Code",
+                                border: OutlineInputBorder(
+                                  borderSide:
+                                      const BorderSide(color: AppColor.text),
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                suffixIcon: IconButton(
+                                  onPressed: () {
+                                    _viewCodeController.text = "";
+                                  },
+                                  icon: Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(20),
+                                      color: AppColor.interactive,
+                                    ),
+                                    padding: const EdgeInsets.all(2),
+                                    child: const Icon(
+                                      Icons.clear,
+                                      size: 15,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                                errorText: errorViewCode,
+                              ),
+                              onChanged: (value) {
+                                if (value.trim().isNotEmpty &&
+                                    errorViewCode != null) {
+                                  setState(() {
+                                    errorViewCode = null;
                                   });
                                 }
                               },

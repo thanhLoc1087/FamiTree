@@ -1,4 +1,5 @@
 import 'package:famitree/src/core/constants/colors.dart';
+import 'package:famitree/src/core/constants/text_style.dart';
 import 'package:famitree/src/core/global/global_data.dart';
 import 'package:famitree/src/core/utils/toasty.dart';
 import 'package:famitree/src/data/models/place.dart';
@@ -26,8 +27,10 @@ class ManagePlacePage extends StatelessWidget {
         bottomNavigationBar: _buildAddPlace(),
         appBar: AppBar(
           elevation: 0,
+          backgroundColor: Colors.transparent,
+          title: Text("Places", style: AppTextStyles.header,),
           centerTitle: true,
-          title: const Text("Places"),
+          leading: const BackButton(color: AppColor.primary,),
         ),
         body: Container(
           constraints: BoxConstraints(

@@ -9,6 +9,7 @@ import 'package:famitree/src/data/models/place.dart';
 import 'package:famitree/src/data/models/relationship_type.dart';
 import 'package:famitree/src/data/models/user.dart';
 import 'package:famitree/src/data/repositories/global_repository.dart';
+import 'package:famitree/src/services/notifiers/current_user.dart';
 // import 'package:famitree/src/services/notifiers/current_user.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -118,12 +119,12 @@ class GlobalData {
     );
 
     await _cancelSubscription(fbMyMembers);
-    // fbMyMembers = await _repository.listenMyMembers(
-    //   onListen: (value) {
-    //     streamMyMembers.add(value);
-    //   }, 
-    //   treeCode: CurrentUser().user.treeCode,
-    // );
+    fbMyMembers = await _repository.listenMyMembers(
+      onListen: (value) {
+        streamMyMembers.add(value);
+      }, 
+      treeCode: CurrentUser().user.treeCode,
+    );
   }
 
   _cancelSubscription(StreamSubscription? subs) async {

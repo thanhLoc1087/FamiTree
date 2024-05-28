@@ -24,27 +24,29 @@ class RelationshipTypesTable extends StatelessWidget {
       child: BlocBuilder<ManageRelationshipTypeBloc, ManageRelationshipTypeState>(
         builder: (context, state) {
           debugPrint("${state.items}");
-          return DataTable(
-              horizontalMargin: 10,
-              columnSpacing: 20,
-              dataRowMinHeight: 45,
-              dataRowMaxHeight: 45,
-              border: TableBorder.all(width: 0.3, color: Colors.black26),
-              headingRowColor: MaterialStateColor.resolveWith(
-                  (states) => AppColor.background),
-              headingRowHeight: 50,
-              showCheckboxColumn: false,
-              columns: const [
-                DataColumn(label: ColumnField(name: "ID")),
-                DataColumn(label: ColumnField(name: "Name")),
-                DataColumn(label: ColumnField(name: "Description")),
-                DataColumn(label: ColumnField(name: "Quantity")),
-                DataColumn(label: ColumnField(name: "Delete")),
-              ],
-              rows: [
-                for (var i = 0; i < state.items.length; i++)
-                  myRow(context, state.items[i], i + 1, state),
-              ]);
+          return SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: DataTable(
+                horizontalMargin: 10,
+                columnSpacing: 20,
+                dataRowMinHeight: 45,
+                dataRowMaxHeight: 45,
+                border: TableBorder.all(width: 0.3, color: Colors.black26),
+                headingRowColor: MaterialStateColor.resolveWith(
+                    (states) => AppColor.background),
+                headingRowHeight: 50,
+                showCheckboxColumn: false,
+                columns: const [
+                  DataColumn(label: ColumnField(name: "ID")),
+                  DataColumn(label: ColumnField(name: "Name")),
+                  DataColumn(label: ColumnField(name: "Description")),
+                  DataColumn(label: ColumnField(name: "Quantity")),
+                ],
+                rows: [
+                  for (var i = 0; i < state.items.length; i++)
+                    myRow(context, state.items[i], i + 1, state),
+                ]),
+          );
         },
       ),
     );
@@ -57,11 +59,6 @@ class RelationshipTypesTable extends StatelessWidget {
     ManageRelationshipTypeState state,
   ) {
     return DataRow(
-        onSelectChanged: (value) {
-          if (value == true) {
-            _update(context, item, state);
-          }
-        },
         cells: [
           DataCell(
             Center(
@@ -93,38 +90,6 @@ class RelationshipTypesTable extends StatelessWidget {
               ),
             ),
           ),
-          DataCell(
-            Center(
-              child: !item.deleted
-                ? InkWell(
-                    onTap: () {
-                      _deleteService(context, item);
-                    },
-                    child: Container(
-                      height: 45,
-                      constraints: const BoxConstraints(minWidth: 200),
-                      padding: const EdgeInsets.all(12),
-                      child: const Icon(
-                        Icons.delete_outline,
-                        color: AppColor.danger,
-                      ),
-                    ),
-                  )
-                : InkWell(
-                    onTap: () {
-                      _restoreService(context, item);
-                    },
-                    child: Container(
-                      height: 45,
-                      constraints: const BoxConstraints(minWidth: 200),
-                      padding: const EdgeInsets.all(12),
-                      child: const Icon(
-                        Icons.delete_outline,
-                        color: AppColor.safe,
-                      ),
-                    ),
-                  )
-              )),
         ]);
   }
 

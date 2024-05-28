@@ -1,4 +1,5 @@
 import 'package:famitree/src/core/constants/colors.dart';
+import 'package:famitree/src/core/constants/text_style.dart';
 import 'package:famitree/src/core/utils/toasty.dart';
 import 'package:famitree/src/data/models/achievement_type.dart';
 import 'package:famitree/src/data/repositories/all_repository.dart';
@@ -25,7 +26,9 @@ class ManageAchievementTypePage extends StatelessWidget {
         appBar: AppBar(
           elevation: 0,
           centerTitle: true,
-          title: const Text("Achievement Types"),
+          leading: const BackButton(color: AppColor.primary,),
+          backgroundColor: Colors.transparent,
+          title: Text("Achievement Types", style: AppTextStyles.header,),
         ),
         body: Container(
           constraints: BoxConstraints(

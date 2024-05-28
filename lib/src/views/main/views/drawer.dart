@@ -60,6 +60,9 @@ class ShopMenuDrawer extends StatelessWidget {
       case EMainMenu.updateProfile:
         Navigator.of(context).pushNamed(AppRouter.updateProfile);
         break;
+      case EMainMenu.viewTree:
+        Navigator.of(context).pushNamed(AppRouter.viewTree);
+        break;
     }
   }
 

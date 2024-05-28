@@ -1,7 +1,8 @@
 import 'package:famitree/src/core/constants/colors.dart';
 import 'package:famitree/src/views/common/ordinary_button.dart';
 import 'package:famitree/src/views/home/views/add_new_member_form.dart';
-import 'package:famitree/src/views/home/views/create_tree_form.dart';
+import 'package:famitree/src/views/home/views/member_achievement_dialog.dart';
+import 'package:famitree/src/views/home/views/member_death_form.dart';
 import 'package:flutter/material.dart';
 
 class MyFloatingActionButton extends StatefulWidget {
@@ -35,6 +36,8 @@ class _MyFloatingActionButtonState extends State<MyFloatingActionButton> {
               child: Container(
                 margin: const EdgeInsets.only(top: 16.0),
                 child: Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          mainAxisAlignment: MainAxisAlignment.end,
                   children: value
                       ? _additionalButtons(context)
                       : <Widget>[],
@@ -63,22 +66,6 @@ class _MyFloatingActionButtonState extends State<MyFloatingActionButton> {
           final data = await showDialog(
             context: context,
             builder: (context) {
-              return const CreateTreeForm(
-              );
-            },
-          );
-          if (data != null) {
-            debugPrint(data);
-          }
-        },
-        text: 'Button 1',
-      ),
-      const SizedBox(height: 20,),
-      OrdinaryButton(
-        onPressed: () async {
-          final data = await showDialog(
-            context: context,
-            builder: (context) {
               return const AddMemberForm(
               );
             },
@@ -87,7 +74,39 @@ class _MyFloatingActionButtonState extends State<MyFloatingActionButton> {
             debugPrint(data);
           }
         },
-        text: 'Button 2',
+        text: 'Add new member',
+      ),
+      const SizedBox(height: 20,),
+      OrdinaryButton(
+        onPressed: () async {
+          final data = await showDialog(
+            context: context,
+            builder: (context) {
+              return const MemberAchievementForm(
+              );
+            },
+          );
+          if (data != null) {
+            debugPrint(data);
+          }
+        },
+        text: 'Add member achievement',
+      ),
+      const SizedBox(height: 20,),
+      OrdinaryButton(
+        onPressed: () async {
+          final data = await showDialog(
+            context: context,
+            builder: (context) {
+              return const MemberDeathForm(
+              );
+            },
+          );
+          if (data != null) {
+            debugPrint(data);
+          }
+        },
+        text: 'Add member death',
       ),
       const SizedBox(height: 20,),
       // Add more buttons as needed

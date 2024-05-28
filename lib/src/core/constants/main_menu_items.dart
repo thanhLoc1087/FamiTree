@@ -4,8 +4,8 @@ class MainMenuItems {
   static List<EMainMenu> userMenus = [
     EMainMenu.home,
     EMainMenu.chart,
-    EMainMenu.profile,
-    EMainMenu.settings,
+    // EMainMenu.profile,
+    EMainMenu.viewTree,
     EMainMenu.updateProfile,
     EMainMenu.forgotPassword,
     EMainMenu.logout,

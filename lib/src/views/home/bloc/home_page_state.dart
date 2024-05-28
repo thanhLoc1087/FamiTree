@@ -11,6 +11,7 @@ class HomePageState extends Equatable {
     this.members = const [],
     this.isLoading = false,
     this.myTree,
+    this.selectedMember,
   });
 
   final bool isLoading;
@@ -20,6 +21,8 @@ class HomePageState extends Equatable {
   final List<RelationshipType> relationshipTypes;
   final List<CauseOfDeath> deathCauses;
   final List<Member> members;
+
+  final Member? selectedMember;
 
   final FamilyTree? myTree;
   
@@ -33,6 +36,7 @@ class HomePageState extends Equatable {
     deathCauses,
     members,
     myTree,
+    selectedMember,
   ];
 
   HomePageState copyWith({
@@ -44,6 +48,7 @@ class HomePageState extends Equatable {
     List<CauseOfDeath>? deathCauses,
     List<Member>? members,
     FamilyTree? myTree,
+    Member? selectedMember,
   }) {
     return HomePageState(
       isLoading: isLoading ?? this.isLoading,
@@ -54,6 +59,7 @@ class HomePageState extends Equatable {
       deathCauses: deathCauses ?? this.deathCauses,
       members: members ?? this.members,
       myTree: myTree ?? this.myTree,
+      selectedMember: selectedMember ?? this.selectedMember,
     );
   }
 }
@@ -67,6 +73,8 @@ class ErrorUpdateHomePageState extends HomePageState {
     super.relationshipTypes = const [],
     super.deathCauses = const [],
     super.isLoading = false,
+    super.selectedMember,
+    super.myTree,
     this.errorMessage = "",
   });
 
@@ -83,7 +91,9 @@ class ErrorUpdateHomePageState extends HomePageState {
       relationshipTypes: mps.relationshipTypes,
       deathCauses: mps.deathCauses,
       isLoading: mps.isLoading,
-      errorMessage: errorMessage ?? ''
+      errorMessage: errorMessage ?? '',
+      selectedMember: mps.selectedMember,
+      myTree: mps.myTree,
     );
   }
 }
@@ -96,6 +106,8 @@ class CompleteUpdateHomePageState extends HomePageState {
     super.relationshipTypes = const [],
     super.deathCauses = const [],
     super.isLoading = false,
+    super.selectedMember,
+    super.myTree,
   });
 
   factory CompleteUpdateHomePageState.fromHomePageState(
@@ -107,6 +119,8 @@ class CompleteUpdateHomePageState extends HomePageState {
       relationshipTypes: mps.relationshipTypes,
       deathCauses: mps.deathCauses,
       isLoading: mps.isLoading,
+      selectedMember: mps.selectedMember,
+      myTree: mps.myTree,
     );
   }
 }

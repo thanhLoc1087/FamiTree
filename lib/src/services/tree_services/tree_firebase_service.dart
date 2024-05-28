@@ -58,6 +58,24 @@ class TreeRemoteService {
     return null;
   }
 
+  Future<FamilyTree?> getTreeByViewCode(String code) async {
+    final data = await _ref
+        .where("viewCode", isEqualTo: code)
+        .limit(1)
+        .get();
+    if (data.size == 1) {
+      final member = await getFirstMember(data.docs.first.data()['treeCode']);
+      if (member != null) {
+        return FamilyTree.fromJson(
+        id: data.docs.first.id, 
+        map: data.docs.first.data(),
+        firstMember: member
+      );
+      }
+    }
+    return null;
+  }
+
   Future<Member?> getFirstMember(String treeCode) async {
     final members = await _memberService.getMembersByTreeCode(treeCode);
     final mapMember = <String, Member> {
@@ -70,9 +88,33 @@ class TreeRemoteService {
       if (relationship == null) {
         firstMember = mem;
       } else if (relationship.type.id == "spouse") {
-        mapMember[relationship.member.id]?.setSpouse(mem);
+        if (mapMember[relationship.member.id] != null) {
+          mem.setSpouse(mapMember[relationship.member.id]!);
+          if (mem.isDead) {
+            mapMember[relationship.member.id]?.addPastSppouse(mem);
+          } else {
+            mapMember[relationship.member.id]?.setSpouse(mem);
+          }
+        }
+      }
+    }
+    for (var mem in members) {
+      final relationship = mem.relationship;
+      if (relationship == null) {
+        firstMember = mem;
       } else if (relationship.type.id == "child") {
         mapMember[relationship.member.id]?.addChild(mem);
+        if (mapMember[relationship.member.id] != null) {
+          mem.addParent(mapMember[relationship.member.id]!);
+          if (mapMember[relationship.member.id]?.spouse != null) {
+            mem.addParent(mapMember[relationship.member.id]!.spouse!);
+            mapMember[relationship.member.id]?.spouse?.addChild(mem);
+          }
+          for (var past in mapMember[relationship.member.id]?.pastSpouses ?? []) {
+            mem.addParent(past);
+            past.addChild(mem);
+          }
+        }
       }
     }
     return firstMember;
@@ -89,6 +131,11 @@ class TreeRemoteService {
       final countExistedCode =
           await countExistingCodes(tree.name.trim());
       if (countExistedCode.a + countExistedCode.b > 0) {
+        return false;
+      }
+      final countExistedViewCode =
+          await countExistingViewCodes(tree.name.trim());
+      if (countExistedViewCode.a + countExistedViewCode.b > 0) {
         return false;
       }
       
@@ -114,7 +161,25 @@ class TreeRemoteService {
     // xóa lẫn thường, có trùng tên là lấy
     // Trả về pair, số name đã xóa, số name còn sống
     final result = await _ref
-        .where("code", isEqualTo: treeCode)
+        .where("treeCode", isEqualTo: treeCode)
+        .get();
+    int countDeleted = 0;
+    int countUndeleted = 0;
+    for (var doc in result.docs) {
+      if (cvToBool(doc['deleted'], false)) {
+        countDeleted++;
+      } else {
+        countUndeleted++;
+      }
+    }
+    return Pair(countDeleted, countUndeleted);
+  }
+  
+  Future<Pair> countExistingViewCodes(String treeCode) async {
+    // xóa lẫn thường, có trùng tên là lấy
+    // Trả về pair, số name đã xóa, số name còn sống
+    final result = await _ref
+        .where("viewCode", isEqualTo: treeCode)
         .get();
     int countDeleted = 0;
     int countUndeleted = 0;

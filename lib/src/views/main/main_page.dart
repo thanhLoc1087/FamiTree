@@ -7,6 +7,7 @@ import 'package:famitree/src/views/auth/views/pre_login_page.dart';
 import 'package:famitree/src/views/auth/views/verify_page.dart';
 import 'package:famitree/src/views/cms/cms_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 import '../home/home_page.dart';
@@ -31,23 +32,47 @@ class MainPage extends StatelessWidget {
     return PopScope(
       canPop: true,
       child: FutureBuilder(
-          future: AuthService.firebase().initialize(),
-          builder: (context, snapshot) {
-            switch (snapshot.connectionState) {
-              case ConnectionState.done:
-                final googleUser = AuthService.google().currentUser;
-                if (googleUser != null) {
+        future: AuthService.firebase().initialize(),
+        builder: (context, snapshot) {
+          switch (snapshot.connectionState) {
+            case ConnectionState.done:
+              final googleUser = AuthService.google().currentUser;
+              if (googleUser != null) {
+                return FutureBuilder(
+                  future: MyUser.getCurrentUser(),
+                  builder: (context, userSnapshot) {
+                    if (userSnapshot.connectionState == ConnectionState.done) {
+                      if (userSnapshot.data == null) {
+                        AuthService.google().logout();
+                        return const PreLoginPage();
+                      }
+                      Provider.of<CurrentUser>(context, listen: false).user =
+                          userSnapshot.data!;
+                      return const MainPageContent();
+                    } else {
+                      return const Scaffold(
+                        body: Center(child: CircularProgressIndicator()),
+                      );
+                    }
+                  },
+                );
+              }
+              final emailUser = AuthService.firebase().currentUser;
+              if (emailUser != null) {
+                final emailVerified = emailUser.isEmailVerified;
+                if (emailVerified) {
                   return FutureBuilder(
                     future: MyUser.getCurrentUser(),
                     builder: (context, userSnapshot) {
-                      if (userSnapshot.connectionState == ConnectionState.done) {
+                      if (userSnapshot.connectionState ==
+                          ConnectionState.done) {
                         if (userSnapshot.data == null) {
-                          AuthService.google().logout();
+                          AuthService.firebase().logout();
                           return const PreLoginPage();
                         }
                         Provider.of<CurrentUser>(context, listen: false).user =
                             userSnapshot.data!;
-                        return const MainPageContent();
+                        return const HomePage();
                       } else {
                         return const Scaffold(
                           body: Center(child: CircularProgressIndicator()),
@@ -55,42 +80,19 @@ class MainPage extends StatelessWidget {
                       }
                     },
                   );
-                }
-                final emailUser = AuthService.firebase().currentUser;
-                if (emailUser != null) {
-                  final emailVerified = emailUser.isEmailVerified;
-                  if (emailVerified) {
-                    return FutureBuilder(
-                      future: MyUser.getCurrentUser(),
-                      builder: (context, userSnapshot) {
-                        if (userSnapshot.connectionState ==
-                            ConnectionState.done) {
-                          if (userSnapshot.data == null) {
-                            AuthService.firebase().logout();
-                            return const PreLoginPage();
-                          }
-                          Provider.of<CurrentUser>(context, listen: false).user =
-                              userSnapshot.data!;
-                          return const HomePage();
-                        } else {
-                          return const Scaffold(
-                            body: Center(child: CircularProgressIndicator()),
-                          );
-                        }
-                      },
-                    );
-                  } else {
-                    return const VerifyEmailPage();
-                  }
                 } else {
-                  return const PreLoginPage();
+                  return const VerifyEmailPage();
                 }
-              default:
-                return const Scaffold(
-                  body: Center(child: CircularProgressIndicator()),
-                );
-            }
-          }),
+              } else {
+                return const PreLoginPage();
+              }
+            default:
+              return const Scaffold(
+                body: Center(child: CircularProgressIndicator()),
+              );
+          }
+        }
+      ),
     );
   }
 }
@@ -111,33 +113,43 @@ class MainPageContentState extends State<MainPageContent> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: IconButton(
-          onPressed: () {
-            GlobalVar.scaffoldState.currentState
-                ?.openDrawer();
-          },
-          icon: const Icon(
-            Icons.menu,
-            color: AppColor.text,
+    return OrientationBuilder(
+      builder: (BuildContext context, Orientation orientation) { 
+        if(MediaQuery. of(context).orientation == Orientation.portrait) 
+        { 
+          SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]); 
+        }else { 
+          SystemChrome.setPreferredOrientations([DeviceOrientation.landscapeLeft]); 
+        }
+        return Scaffold(
+          appBar: AppBar(
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            leading: IconButton(
+              onPressed: () {
+                GlobalVar.scaffoldState.currentState
+                    ?.openDrawer();
+              },
+              icon: const Icon(
+                Icons.menu,
+                color: AppColor.text,
+              ),
+            ),
           ),
-        ),
-      ),
-      key: GlobalVar.scaffoldState,
-      backgroundColor: AppColor.background,
-      extendBodyBehindAppBar: true,
-      drawer: const ShopMenuDrawer(),
-      body: Builder(
-        builder: (context) {
-          if (MyUser.currentUser?.isAdmin ?? false) {
-            return const CMSPage();
-          }
-          return const HomePage();
-        }, 
-      ) 
+          key: GlobalVar.scaffoldState,
+          backgroundColor: AppColor.background,
+          extendBodyBehindAppBar: true,
+          drawer: const ShopMenuDrawer(),
+          body: Builder(
+            builder: (context) {
+              if (MyUser.currentUser?.isAdmin ?? false) {
+                return const CMSPage();
+              }
+              return const HomePage();
+            }, 
+          ) 
+        );
+      }
     );
   }
 }

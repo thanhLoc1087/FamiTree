@@ -12,6 +12,11 @@ enum EMainMenu {
     title: 'Chart',
     iconData: Icons.table_chart_outlined
   ),
+  viewTree(
+    id: 'viewTree',
+    title: 'View Tree',
+    iconData: Icons.show_chart
+  ),
   profile(
     id: 'profile',
     title: 'Profile',

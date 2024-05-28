@@ -7,12 +7,12 @@ class AppTextStyles {
   static TextStyle header = GoogleFonts.inter(
     color: AppColor.backgroundComplementary,
     fontWeight: FontWeight.bold,
-    fontSize: 32
+    fontSize: 20
   );
   static TextStyle header2 = GoogleFonts.inter(
     color: AppColor.accent,
     fontWeight: FontWeight.bold,
-    fontSize: 32
+    fontSize: 20
   );
   static TextStyle body = const TextStyle(
     color: AppColor.text,

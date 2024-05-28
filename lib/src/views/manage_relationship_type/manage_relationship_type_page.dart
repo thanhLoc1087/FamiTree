@@ -1,4 +1,5 @@
 import 'package:famitree/src/core/constants/colors.dart';
+import 'package:famitree/src/core/constants/text_style.dart';
 import 'package:famitree/src/core/utils/toasty.dart';
 import 'package:famitree/src/data/models/relationship_type.dart';
 import 'package:famitree/src/data/repositories/all_repository.dart';
@@ -25,7 +26,9 @@ class ManageRelationshipTypePage extends StatelessWidget {
         appBar: AppBar(
           elevation: 0,
           centerTitle: true,
-          title: const Text("Relationship Types"),
+          backgroundColor: Colors.transparent,
+          title: Text("Relationship Types", style: AppTextStyles.header,),
+          leading: const BackButton(color: AppColor.primary,),
         ),
         body: Container(
           constraints: BoxConstraints(

@@ -16,4 +16,6 @@ class AppRouter {
   static const String manageJobs = '/manageJobs';
   static const String updateProfile = '/updateProfile';
   static const String updateProfilePic = '/updateProfilePic';
+  static const String memberProfile = '/memberProfile';
+  static const String viewTree = '/viewTree';
 }

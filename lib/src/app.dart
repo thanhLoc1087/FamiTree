@@ -7,10 +7,12 @@ import 'package:famitree/src/views/auth/views/pre_login_page.dart';
 import 'package:famitree/src/views/auth/views/register_page.dart';
 import 'package:famitree/src/views/auth/views/change_password_page.dart';
 import 'package:famitree/src/views/auth/views/verify_page.dart';
+import 'package:famitree/src/views/chart/chart_page.dart';
 import 'package:famitree/src/views/manage_achievement_type/manage_achievement_type_page.dart';
 import 'package:famitree/src/views/manage_death_cause/manage_death_cause_page.dart';
 import 'package:famitree/src/views/manage_place/manage_place_page.dart';
 import 'package:famitree/src/views/update_profile/update_profile_page.dart';
+import 'package:famitree/src/views/view_tree/view_tree_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -24,6 +26,7 @@ import 'views/home/bloc/home_page_bloc.dart';
 import 'views/main/main_page.dart';
 import 'views/manage_job/manage_job_page.dart';
 import 'views/manage_relationship_type/manage_relationship_type_page.dart';
+import 'views/member_profile/member_profile.dart';
 import 'views/settings/settings_controller.dart';
 import 'views/settings/settings_view.dart';
 import 'views/splash/splash_page.dart';
@@ -160,6 +163,12 @@ class _MyAppState extends State<MyApp> {
                           return const UpdateProfilePage();
                         case AppRouter.updateProfilePic:
                           return const UserProfileUploader();
+                        case AppRouter.memberProfile:
+                          return MemberProbilePage(readOnly: (routeSettings.arguments as bool?) ?? false);
+                        case AppRouter.chart:
+                          return const ChartPage();
+                        case AppRouter.viewTree:
+                          return const ViewTreePage();
           
                         default:
                           return const MainPage();

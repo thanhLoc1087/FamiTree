@@ -23,27 +23,30 @@ class JobsTable extends StatelessWidget {
           RepositoryProvider.of<AllRepository>(context).jobRepository),
       child: BlocBuilder<ManageJobBloc, ManageJobState>(
         builder: (context, state) {
-          return DataTable(
-              horizontalMargin: 10,
-              columnSpacing: 20,
-              dataRowMinHeight: 45,
-              dataRowMaxHeight: 45,
-              border: TableBorder.all(width: 0.3, color: Colors.black26),
-              headingRowColor: MaterialStateColor.resolveWith(
-                  (states) => AppColor.background),
-              headingRowHeight: 50,
-              showCheckboxColumn: false,
-              columns: const [
-                DataColumn(label: ColumnField(name: "ID")),
-                DataColumn(label: ColumnField(name: "Name")),
-                DataColumn(label: ColumnField(name: "Description")),
-                DataColumn(label: ColumnField(name: "Quantity")),
-                DataColumn(label: ColumnField(name: "Delete")),
-              ],
-              rows: [
-                for (var i = 0; i < state.jobs.length; i++)
-                  myRow(context, state.jobs[i], i + 1, state),
-              ]);
+          return SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: DataTable(
+                horizontalMargin: 10,
+                columnSpacing: 20,
+                dataRowMinHeight: 45,
+                dataRowMaxHeight: 45,
+                border: TableBorder.all(width: 0.3, color: Colors.black26),
+                headingRowColor: MaterialStateColor.resolveWith(
+                    (states) => AppColor.background),
+                headingRowHeight: 50,
+                showCheckboxColumn: false,
+                columns: const [
+                  DataColumn(label: ColumnField(name: "ID")),
+                  DataColumn(label: ColumnField(name: "Name")),
+                  DataColumn(label: ColumnField(name: "Description")),
+                  DataColumn(label: ColumnField(name: "Quantity")),
+                  DataColumn(label: ColumnField(name: "Delete")),
+                ],
+                rows: [
+                  for (var i = 0; i < state.jobs.length; i++)
+                    myRow(context, state.jobs[i], i + 1, state),
+                ]),
+          );
         },
       ),
     );

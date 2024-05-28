@@ -16,6 +16,13 @@ class CurrentUser extends ChangeNotifier {
     // notifyListeners();
   }
 
+  void setTreeCode(String treeCode) {
+    user = user.copyWith(
+      oldCode: user.treeCode,
+      treeCode: treeCode,
+    );
+  }
+
   void setName() {
     notifyListeners();
   }

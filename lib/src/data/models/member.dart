@@ -15,28 +15,48 @@ class Member extends Equatable {
   final Place homeland;
   final Job job;
   final List<Achievement> achievements;
-  final Death? death;
+  Death? death;
   final String treeCode;
   final DateTime birthday;
   final String? image;
   Member? spouse;
   List<Member>? children;
+  List<Member>? pastSpouses;
+  List<Member>? parents;
   final bool isMale;
+
+  void deleteDeath() {
+    death = null;
+  }
 
   void setSpouse(Member spouse) {
     this.spouse = spouse;
   }
 
-  void addChild(Member spouse) {
+  void addChild(Member child) {
     children ??=[];
-    children!.add(spouse);
+    children!.add(child);
+  }
+
+  void addPastSppouse(Member spouse) {
+    pastSpouses ??=[];
+    pastSpouses!.add(spouse);
+  }
+
+  void addParent(Member spouse) {
+    parents ??=[];
+    parents!.add(spouse);
   }
 
   bool get isDead => death != null;
+
+  bool get isNotInLaw => relationship == null || relationship!.type.id == 'child';
   
   Member({
     this.spouse, 
     this.children, 
+    this.pastSpouses,
+    this.parents,
     required this.id,
     required this.name,
     this.relationship,
@@ -53,6 +73,8 @@ class Member extends Equatable {
   Member copyWith({
     Member? spouse,
     List<Member>? children,
+    List<Member>? pastSpouses,
+    List<Member>? parents,
     String? id,
     String? name,
     Relationship? relationship,
@@ -79,6 +101,8 @@ class Member extends Equatable {
       isMale: isMale ?? this.isMale,
       spouse: spouse ?? this.spouse,
       children: children ?? this.children,
+      pastSpouses: pastSpouses ?? this.pastSpouses,
+      parents: parents ?? this.parents,
     );
   }
 
@@ -120,7 +144,7 @@ class Member extends Equatable {
 
   factory Member.fromJson(String? id, Map<String, dynamic> json) {
     return Member(
-      id: id ?? cvToString(json['id']),
+      id: id ?? json['id'],
       name: cvToString(json['name']),
       relationship: json['relationship'] != null ? Relationship.fromJson(json['relationship'] as Map<String,dynamic>) : null,
       homeland: Place.fromJson(json: json['homeland'] as Map<String,dynamic>),

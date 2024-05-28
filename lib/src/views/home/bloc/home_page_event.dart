@@ -7,6 +7,11 @@ abstract class HomePageEvent extends Equatable {
   List<Object> get props => [];
 }
 
+class InitHomeEvent extends HomePageEvent {
+
+  const InitHomeEvent();
+}
+
 class LoadDataHomeEvent extends HomePageEvent {
   final List<Place>? places;
   final List<Job>? jobs;
@@ -14,6 +19,7 @@ class LoadDataHomeEvent extends HomePageEvent {
   final List<RelationshipType>? relationshipTypes;
   final List<CauseOfDeath>? deathCauses;
   final List<Member>? members;
+  final FamilyTree? tree;
 
   const LoadDataHomeEvent({
     this.places,
@@ -22,6 +28,7 @@ class LoadDataHomeEvent extends HomePageEvent {
     this.relationshipTypes,
     this.deathCauses,
     this.members,
+    this.tree,
   });
 }
 
@@ -32,24 +39,63 @@ class AddTreeHomeEvent extends HomePageEvent {
   const AddTreeHomeEvent(this.item, this.firstMember);
 }
 
+class SelectMemberHomeEvent extends HomePageEvent {
+  final Member member;
+
+  const SelectMemberHomeEvent(this.member);
+}
+
 class AddMemberEvent extends HomePageEvent {
   final Member member;
 
   const AddMemberEvent(this.member);
 }
 
-class AddAchievementEvent extends HomePageEvent {
+class UpdateMemberEvent extends HomePageEvent {
   final Member member;
+
+  const UpdateMemberEvent(this.member);
+}
+
+class AddAchievementEvent extends HomePageEvent {
+  Member member;
   final Achievement achievement;
 
-  const AddAchievementEvent(this.member, this.achievement);
+  AddAchievementEvent(this.member, this.achievement);
+}
+
+class UpdateAchievementEvent extends HomePageEvent {
+  Member member;
+  final Achievement achievement;
+
+  UpdateAchievementEvent(this.member, this.achievement);
+}
+
+class DeleteAchievementEvent extends HomePageEvent {
+  Member member;
+  final Achievement achievement;
+
+  DeleteAchievementEvent(this.member, this.achievement);
 }
 
 class AddDeathEvent extends HomePageEvent {
-  final Member member;
+  Member member;
   final Death death;
 
-  const AddDeathEvent(this.member, this.death);
+  AddDeathEvent(this.member, this.death);
+}
+
+class DeleteDeathEvent extends HomePageEvent {
+   Member member;
+
+   DeleteDeathEvent(this.member);
+}
+
+class UpdateDeathEvent extends HomePageEvent {
+  Member member;
+  final Death death;
+
+  UpdateDeathEvent(this.member, this.death);
 }
 
 class UpdateHomeEvent extends HomePageEvent {

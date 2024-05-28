@@ -34,9 +34,18 @@ class MemberRepository {
   Future<int> addDeath(Member item, Death death)
   => remoteService.addDeath(item, death);
 
+  Future<int> deleteDeath(Member item)
+  => remoteService.deleteDeath(item);
+
+  Future<int> updateDeath(Member item, Death death)
+  => remoteService.updateDeath(item, death);
+
   Future<int> addAchievement(Member item, Achievement achievement)
   => remoteService.addAchievement(item, achievement);
 
   Future<int> updateAchievement(Member item, Achievement achievement)
   => remoteService.updateAchievement(item, achievement);
+
+  Future<int> deleteAchievement(Member item, Achievement achievement)
+  => remoteService.deleteAchievement(item, achievement);
 }
